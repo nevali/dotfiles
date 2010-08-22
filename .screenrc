@@ -1,0 +1,25 @@
+bind k
+bind ^k
+bind .
+bind ^\
+bind \\
+bind ^h
+bind h
+bind a
+bind ^a
+bind s
+bind ^s
+bind ^x
+bind x
+bindkey -k k9 command
+# bindkey "\024" command
+vbell off
+autodetach on
+startup_message off
+pow_detach_msg "Screen session of \$LOGNAME \$:cr:\$:nl:ended."
+shell -$SHELL
+defscrollback 1000
+defutf8 on
+nethack off
+bindkey "^?" stuff "^H"
+escape ^Tt
