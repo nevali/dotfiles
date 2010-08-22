@@ -1,0 +1,4 @@
+These are the various dotfiles that I use. There aren't many of them,
+as most customisations I use are applied systemwide (by way of a separate
+private repository -- unfortunately it contains some sensitive information
+which would be inconvenient to split out. Sorry).

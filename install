@@ -1,0 +1,16 @@
+#! /bin/sh
+
+FILES='.emacs'
+
+here=$(cd `dirname $0` && pwd)
+for f in $FILES ; do
+    if test -r $HOME/$f ; then
+	if test -h $HOME/$f ; then
+	    rm $HOME/$f || continue
+	else
+	    mv $HOME/$f $HOME/$f.dotfiles-backup-$(date +%Y%m%d%H%M%S)
+        fi
+    fi
+    ln -s $here/$f $HOME/$f
+done
+
