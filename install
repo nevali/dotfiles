@@ -1,6 +1,6 @@
 #! /bin/sh
 
-FILES='.emacs .muttrc'
+FILES='.emacs .muttrc .bashrc'
 
 here=$(cd `dirname $0` && pwd)
 for f in $FILES ; do
