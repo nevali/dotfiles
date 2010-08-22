@@ -91,7 +91,7 @@ set   askcc                             # Ask me about CCs
 set   confirmcreate                     # Ask me about creating new files
 set   delete=yes                        # Don't ask me whether or not I meant to delete messages
 set   edit_hdrs                         # I want to edit the headers.
-set   editor="nano --tempfile %s"
+set   editor="emacs %s"
 set   envelope_from=yes
 set   hdrs
 set   header
