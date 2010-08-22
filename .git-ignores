@@ -1,0 +1,12 @@
+.LS*
+.DS_Store
+._*
+.svn
+CVS
+*~
+Icon[[:space:]]
+*.mode1v3
+*.mode2v3
+*.pbxuser
+*.perspectivev3
+
