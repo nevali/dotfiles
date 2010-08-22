@@ -1,6 +1,6 @@
 #! /bin/sh
 
-FILES='.emacs .muttrc .bashrc .git-ignores'
+FILES='.emacs .muttrc .bashrc .git-ignores .CFUserTextEncoding .indent.pro'
 
 here=$(cd `dirname $0` && pwd)
 for f in $FILES ; do
