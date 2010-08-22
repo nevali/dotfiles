@@ -1,0 +1,118 @@
+alternative_order text/plain text/*
+#auto_view text/plain text/*
+bind index v display-message
+bind index p previous-undeleted
+bind index n next-undeleted
+bind index ' ' next-page
+bind index c mail
+bind index g change-folder
+bind index w search
+bind index y print-message
+bind index x sync-mailbox
+bind index $ sort-mailbox
+bind index a tag-prefix
+bind index \; tag-entry
+bind pager p previous-undeleted
+bind pager n next-undeleted
+bind pager ' ' next-page
+bind pager g change-folder
+bind pager c mail
+bind pager w search
+bind pager y print-message
+bind pager \n noop      # PINE prints "No default action for this menu."
+bind pager <up> previous-line
+bind pager <down> next-line
+bind compose \cx send-message
+bind editor     <delete>  delete-char
+macro index z l~T\r
+color  hdrdefault      green           black
+color  header          brightyellow    black   "^from:"
+color  header          brightyellow    black   "^subject:"
+color  header          brightyellow    black   "^x-recipient:"
+color  quoted          green           black
+color  signature       brightred       black
+color  indicator       brightyellow    red
+color  error           brightred       black
+color  status          brightwhite     blue
+color  tree            brightmagenta   black
+color  tilde           brightmagenta   black
+#color  body            brightyellow    black    (((ht|f)tps?)|mailto):(//)?[^\ "\t]*|www\.[-a-z0-9.]+)[^\ .,;\t>">]
+color  body            brightmagenta   black   "[-a-z_0-9.]+@[-a-z_0-9.]+"
+color  body            brightyellow    black   "^Good signature"
+color  body            brightwhite     red     "^Bad signature from.*"
+mono   header          bold                    "^from:"
+mono   header          bold                    "^subject:"
+mono   header          bold                    "^x-recipient:"
+mono   error           bold
+#mono   body            bold                     (((ht|f)tps?)|mailto):(//)?[^\ "\t]*|www\.[-a-z0-9.]+)[^\ .,;\t>">]
+mono   body            bold                    "[-a-z_0-9.]+@[-a-z_0-9.]+"
+mono   body            bold                    "^Good signature"
+mono   body            bold                    "^Bad signature from.*"
+ignore *
+unignore From Subject Date Organization To Sender CC Reply-To X-
+#charset-hook windows-1250 CP1250
+#charset-hook windows-1251 CP1251
+#charset-hook windows-1252 CP1252
+#charset-hook windows-1253 CP1253
+#charset-hook windows-1254 CP1254
+#charset-hook windows-1255 CP1255
+#charset-hook windows-1256 CP1256
+#charset-hook windows-1257 CP1257
+#charset-hook windows-1258 CP1258
+#charset-hook en_GB.UTF-8 UTF-8
+#charset-hook utf-8 UTF-8
+set   folder=~/.mail/
+set   spoolfile=~/.mail/
+set   record=+.Sent/
+set   nosave_name
+set   postponed=~/postponed-msgs
+set   hdr_format="%Z %3C %{%b %d} %-19.19L (%5c) %s"
+set   pgp_decode_command="gpg %?p?--passphrase-fd 0? --no-verbose --batch --output - %f"
+set   pgp_verify_command="gpg --no-verbose --batch --output - --verify %s %f"
+set   pgp_decrypt_command="gpg --passphrase-fd 0 --no-verbose --batch --output - %f"
+set   pgp_sign_command="gpg --no-verbose --batch --output - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
+set   pgp_clearsign_command="gpg --no-verbose --batch --output - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
+set   pgp_encrypt_only_command="pgpewrap gpg -v --batch -o - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+set   pgp_encrypt_sign_command="pgpewrap gpg --passphrase-fd 0 -v --batch -o - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+set   pgp_import_command="gpg --no-verbose --import -v %f"
+set   pgp_export_command="gpg --no-verbose --export --armor %r"
+set   pgp_verify_key_command="gpg --no-verbose --batch --fingerprint --check-sigs %r"
+set   pgp_list_pubring_command="gpg --no-verbose --batch --with-colons --list-keys %r" 
+set   pgp_list_secring_command="gpg --no-verbose --batch --with-colons --list-secret keys "%r"
+set   pgp_getkeys_command=""
+set   quote_regexp="^[ \t]*[a-zA-Z\.]*>"  # Default: "^([ \t]*[>|#:}])+"
+set   attribution="On %d, %n wrote:"
+set   abort_nosubject=no                # Let me send messages with an empty subject
+set   abort_unmodified=no               # Let me send empty messages
+set   alias_file=~/.mutt/aliases        # Where to store aliases
+set   allow_8bit                        # Produce correct MIME
+set   ascii_chars
+set   askcc                             # Ask me about CCs
+set   confirmcreate                     # Ask me about creating new files
+set   delete=yes                        # Don't ask me whether or not I meant to delete messages
+set   edit_hdrs                         # I want to edit the headers.
+set   editor="nano --tempfile %s"
+set   envelope_from=yes
+set   hdrs
+set   header
+set   mark_old=no
+set   pgp_autosign=yes
+set   pgp_replysign=yes
+set   pgp_timeout=900
+set   pgp_verify_sig=yes
+set   pgp_create_traditional=no
+set   move=no
+#set   charset="UTF-8"
+#set   send_charset="UTF-8"
+set   sig_dashes=yes
+set   signature=~/.signature
+set   status_on_top=no
+set   tilde=no
+set   use_from=yes
+set   visual="emacs"
+
+unset confirmappend                     # Don't ask me about appending to files
+unset arrow_cursor                      # Use the bar cursor
+unset bounce_delivered                  # Don't include Delivered-to with bounces
+
+source ~/.muttrc.local
