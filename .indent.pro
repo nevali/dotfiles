@@ -1,0 +1,1 @@
+-l512 -bad -bap -bl -bli8 -nce -cli0 -di1 -nbc -psl -bls -ip0 -lp -i8 -npcs -nbs
