@@ -14,6 +14,12 @@
  '(default ((t (:stipple unspecified :background "black" :foreground "grey" :inverse-video unspecified :box unspecified :strike-through unspecified :overline unspecified :underline unspecified :slant normal :weight normal :height 100 :width normal :family "misc-fixed")))))
  (setq default-input-method "ucs")
  (set-default-coding-systems 'utf-8)
-;; (require 'php-mode)
-;; (add-hook 'php-mode-user-hook 'turn-on-font-lock)
- 
+
+ (unless (boundp 'user-emacs-directory)
+   (defvar user-emacs-directory "~/.emacs.d/"
+     "Directory beneath which additional per-user Emacs-specificfiles are placed. Various programs in Emacs store information in this directory. Note that this should end with a directory separator. See also ‘locate-user-emacs-file’."))
+
+(add-to-list 'load-path "~/.emacs.d/common/")
+
+(require 'php-mode)
+(add-hook 'php-mode-user-hook 'turn-on-font-lock)

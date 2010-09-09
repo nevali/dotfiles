@@ -14,3 +14,15 @@ for f in $FILES ; do
     ln -s $here/$f $HOME/$f
 done
 
+if test -d $HOME/.emacs.d ; then
+    true
+else
+    mkdir $HOME/.emacs.d || exit $?
+fi
+if test -h $HOME/.emacs.d/common ; then
+    rm $HOME/.emacs.d/common
+elif test -d $HOME/.emacs.d/common ; then
+    mv $HOME/.emacs.d/common $HOME/.emacs.d/common.dotfiles-backup-$(date +%Y%m%d%H%M%S)
+fi
+ln -s $here/emacs.d $HOME/.emacs.d/common
+
