@@ -7,9 +7,13 @@
   ;; If there is more than one, they won't work right.
  '(c-default-style (quote ((c-mode . "linux") (c++-mode . "linux") (java-mode . "java") (awk-mode . "awk") (other . "linux"))))
  '(c-electric-pound-behavior (quote (alignleft)))
+ '(global-hl-line-mode t)
  '(gud-gdb-command-name "gdb --annotate=1")
+ '(keyboard-coding-system (quote utf-8))
  '(large-file-warning-threshold nil)
  '(make-backup-files nil)
+ '(ns-alternate-modifier (quote none))
+ '(ns-pop-up-frames nil)
  '(scroll-bar-mode (quote right))
  '(tool-bar-mode nil))
 (line-number-mode t)
@@ -19,7 +23,7 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(default ((t (:stipple unspecified :background "black" :foreground "grey" :inverse-video unspecified :box unspecified :strike-through unspecified :overline unspecified :underline unspecified :slant normal :weight normal :height 100 :width normal :family "misc-fixed"))))
+ '(default ((t (:stipple nil :background "black" :foreground "grey" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :family "Menlo"))))
  '(font-lock-comment-delimiter-face ((default (:foreground "green")) (((class color) (min-colors 8) (background dark)) nil)))
  '(font-lock-comment-face ((((class color) (min-colors 8) (background dark)) (:foreground "green"))))
  '(font-lock-constant-face ((((class color) (min-colors 8)) (:foreground "blue" :weight bold))))
@@ -28,6 +32,7 @@
  '(font-lock-preprocessor-face ((t (:background "cyan" :foreground "blue" :weight bold))))
  '(font-lock-string-face ((((class color) (min-colors 8)) (:foreground "green" :weight bold))))
  '(font-lock-type-face ((((class color) (min-colors 8)) (:foreground "red" :weight bold))))
+ '(hl-line ((t (:inherit highlight :background "#1a1a00"))))
  '(minibuffer-prompt ((((background dark)) (:foreground "white" :weight bold))))
  '(mode-line ((t (:background "blue" :foreground "yellow" :weight bold)))))
  (setq default-input-method "ucs")
