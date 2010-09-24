@@ -7,7 +7,6 @@
   ;; If there is more than one, they won't work right.
  '(c-default-style (quote ((c-mode . "linux") (c++-mode . "linux") (java-mode . "java") (awk-mode . "awk") (other . "linux"))))
  '(c-electric-pound-behavior (quote (alignleft)))
- '(global-hl-line-mode t)
  '(gud-gdb-command-name "gdb --annotate=1")
  '(keyboard-coding-system (quote utf-8))
  '(large-file-warning-threshold nil)
@@ -32,7 +31,6 @@
  '(font-lock-preprocessor-face ((t (:background "cyan" :foreground "blue" :weight bold))))
  '(font-lock-string-face ((((class color) (min-colors 8)) (:foreground "green" :weight bold))))
  '(font-lock-type-face ((((class color) (min-colors 8)) (:foreground "red" :weight bold))))
- '(hl-line ((t (:inherit highlight :background "#1a1a00"))))
  '(minibuffer-prompt ((((background dark)) (:foreground "white" :weight bold))))
  '(mode-line ((t (:background "blue" :foreground "yellow" :weight bold)))))
  (setq default-input-method "ucs")
@@ -51,4 +49,10 @@
 			  c-basic-offset 4
 			  indent-tabs-mode t)
 (require 'server)
+(if (eq window-system 'ns) (server-start))
+(remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
+(if (eq window-system 'ns) (custom-set-faces
+ '(hl-line ((t (:inherit highlight :background "#1a1a00"))))))
+(if (eq window-system 'ns) (custom-set-variables
+ '(global-hl-line-mode t)))
 
