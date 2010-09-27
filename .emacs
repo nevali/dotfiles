@@ -50,7 +50,9 @@
 
 ;; I write a lot of PHP. Sue me.
 (require 'php-mode)
+(require 'smarty-mode)
 (add-hook 'php-mode-user-hook 'turn-on-font-lock)
+(add-hook 'smarty-mode-user-hook 'turn-on-font-lock)
 
 ;; Use tabs for indentation, 4-spaces-per-tab when displayed
 (setq-default tab-width 4
