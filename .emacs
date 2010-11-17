@@ -15,7 +15,7 @@
  '(ns-pop-up-frames nil)
  '(scroll-bar-mode (quote right))
  '(tool-bar-mode nil)
- '(global-hl-line-mode f))
+ '(global-hl-line-mode nil))
 (line-number-mode t)
 (column-number-mode t)
 (custom-set-faces
