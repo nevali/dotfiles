@@ -1,15 +1,16 @@
 #! /bin/sh
 
 FILES='.emacs .muttrc .bashrc .git-ignores .CFUserTextEncoding .indent.pro
-.screenrc .plan .project'
+.screenrc .plan .project .profile.common .profile .bashrc'
 
-here=$(cd `dirname $0` && pwd)
+here=`dirname $0`
+here=`cd $here && pwd`
 for f in $FILES ; do
     if test -r $HOME/$f ; then
 	if test -h $HOME/$f ; then
 	    rm $HOME/$f || continue
 	else
-	    mv $HOME/$f $HOME/$f.dotfiles-backup-$(date +%Y%m%d%H%M%S)
+	    mv $HOME/$f $HOME/$f.dotfiles-backup-`date +%Y%m%d%H%M%S`
         fi
     fi
     ln -s $here/$f $HOME/$f
@@ -23,7 +24,7 @@ fi
 if test -h $HOME/.emacs.d/common ; then
     rm $HOME/.emacs.d/common
 elif test -d $HOME/.emacs.d/common ; then
-    mv $HOME/.emacs.d/common $HOME/.emacs.d/common.dotfiles-backup-$(date +%Y%m%d%H%M%S)
+    mv $HOME/.emacs.d/common $HOME/.emacs.d/common.dotfiles-backup-`date +%Y%m%d%H%M%S`
 fi
 ln -s $here/emacs.d $HOME/.emacs.d/common
 
