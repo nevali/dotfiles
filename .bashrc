@@ -7,7 +7,7 @@ fi
 if test -r "$HOME/.bashrc.local" ; then
     . "$HOME/.bashrc.local"
 fi
-if test x"$PS1" = x'# ' || test x"$PS1" = x'$ ' || test x"$PS1" = x'\s-\v\$ '; then
+if test x"$PS1" = x'# ' || test x"$PS1" = x'$ ' || test x"$PS1" = x'\s-\v\$ ' || test x"$PS1" = x'\u@\h:\w\$ ' || test x"$PS1" = x'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ ' ; then
 	PS1="$def_ps1"
 fi
 if test x"$PS2" = x'> ' ; then
