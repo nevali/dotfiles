@@ -1,6 +1,3 @@
-if test -r /etc/profile ; then
-	. /etc/profile
-fi
 if test -r "$HOME/.profile.common" ; then
 	. "$HOME/.profile.common"
 fi
