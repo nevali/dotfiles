@@ -69,3 +69,11 @@ df__vcbranch()
 	   df__branch="git:$branch "
     fi
 }
+
+if type -p emacs 2>&1 >/dev/null ; then
+    def_visual="emacs"
+elif type -p jed 2>&1 >/dev/null ; then
+    def_visual="jed"
+elif type -p nano 2>&1 >/dev/null ; then
+    def_visual="nano"
+fi

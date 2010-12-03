@@ -14,3 +14,9 @@ fi
 if test x"$PROMPT_COMMAND" = x"" ; then
     PROMPT_COMMAND="$def_prompt_command"
 fi
+if test x"$VISUAL" = x"" ; then
+	VISUAL="$def_visual"
+fi
+test x"$VISUAL" = x"" || export VISUAL
+
+
