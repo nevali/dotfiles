@@ -1,6 +1,3 @@
-if test -r /etc/profile ; then
-	. /etc/profile
-fi
 if test -r "$HOME/.profile.common" ; then
 	. "$HOME/.profile.common"
 fi
@@ -8,7 +5,7 @@ if test -r "$HOME/.profile.local" ; then
 	. "$HOME/.profile.local"
 fi
 
-if test x"$PS1" = x'# ' || test x"$PS1" = x'$ ' || test x"$PS1" = x'\s-\v\$ '; then
+if test x"$PS1" = x'# ' || test x"$PS1" = x'$ ' || test x"$PS1" = x'\s-\v\$ ' || test x"$PS1" = x'\u@\h:\w\$ ' || test x"$PS1" = x'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ ' ; then
 	PS1="$def_ps1"
 fi
 if test x"$PS2" = x'> ' ; then
