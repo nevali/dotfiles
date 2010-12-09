@@ -49,7 +49,11 @@
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
 ;; I write a lot of PHP. Sue me.
-(require 'php-mode)
+;; (require 'php-mode)
+(autoload 'php-mode "php-mode" "Major mode for editing php code." t)
+(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.inc$" . php-mode))
+
 (require 'smarty-mode)
 (add-hook 'php-mode-user-hook 'turn-on-font-lock)
 (add-hook 'smarty-mode-user-hook 'turn-on-font-lock)
