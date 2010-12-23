@@ -76,3 +76,5 @@
 ;; Don't prompt for confirmation when closing a file launched by
 ;; emacsclient.
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
+(global-set-key (kbd "<f12>") 'previous-line)
+
