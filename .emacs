@@ -1,3 +1,4 @@
+(require 'mouse)
 (global-font-lock-mode t)
 (setq inhibit-splash-screen t)
 (custom-set-variables
@@ -7,15 +8,18 @@
   ;; If there is more than one, they won't work right.
  '(c-default-style (quote ((c-mode . "linux") (c++-mode . "linux") (java-mode . "java") (awk-mode . "awk") (other . "linux"))))
  '(c-electric-pound-behavior (quote (alignleft)))
+ '(global-hl-line-mode nil)
  '(gud-gdb-command-name "gdb --annotate=1")
  '(keyboard-coding-system (quote utf-8))
  '(large-file-warning-threshold nil)
  '(make-backup-files nil)
+ '(mouse-1-click-follows-link (quote double))
+ '(mouse-highlight nil)
  '(ns-alternate-modifier (quote none))
  '(ns-pop-up-frames nil)
  '(scroll-bar-mode (quote right))
  '(tool-bar-mode nil)
- '(global-hl-line-mode nil))
+ '(xterm-mouse-mode t))
 (line-number-mode t)
 (column-number-mode t)
 (custom-set-faces
@@ -66,6 +70,8 @@
 ;; Bind Esc-g and Cmd+L to 'goto line'
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "s-l") 'goto-line)
+;; Bind <f12> (on some terminals the up-arrow key) to previous-line
+(global-set-key (kbd "<f12>") 'previous-line)
 
 (require 'server)
 
@@ -76,5 +82,4 @@
 ;; Don't prompt for confirmation when closing a file launched by
 ;; emacsclient.
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
-(global-set-key (kbd "<f12>") 'previous-line)
 
