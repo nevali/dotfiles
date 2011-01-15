@@ -53,7 +53,7 @@ df__xterm_title()
 	if test x"$dir" = x"$HOME" ; then
 	    dir='~'
 	else
-		dir=`basename $dir`
+		dir=`basename "$dir"`
 	fi
 	suf='$'
 	test x"$UID" = x"0" && suf='#'
