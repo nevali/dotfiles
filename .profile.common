@@ -57,7 +57,7 @@ df__xterm_title()
 	fi
 	suf='$'
 	test x"$UID" = x"0" && suf='#'
-	printf "\033]2;[$LOGNAME@$NODENAME ${df__branch}${dir}]${suf}\007"
+	printf "\033]2;[$LOGNAME@$NODENAME ${df__branch}%s]${suf}\007" "$dir"
 }
 
 df__vcbranch()
