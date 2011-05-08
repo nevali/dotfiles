@@ -8,6 +8,7 @@ ansi_blue='\[\e[0m\e[34m\]'
 ansi_magenta='\[\e[0m\e[35m\]'
 ansi_cyan='\[\e[0m\e[36m\]'
 ansi_normal="${ansi_reset}"
+ansi_bnormal="${ansi_reset}${ansi_bold}"
 
 case "$TERM" in
         sun-color)
@@ -35,9 +36,9 @@ case "$TERM" in
 esac
 
 if test x"$BUILDENV_SHELL" = x"" ; then
-        def_ps1="${ansi_reset}${ansi_bwhite}[${ansi_byellow}\\u${ansi_yellow}@${ansi_byellow}\\h ${ansi_bmagenta}\${df__branch}${ansi_bcyan}\\W${ansi_bwhite}]\\\$${ansi_normal} "
+        def_ps1="${ansi_reset}${ansi_bnormal}[${ansi_bmagenta}\\u${ansi_magenta}@${ansi_bold}${ansi_bmagenta}\\h${ansi_reset} ${ansi_green}\${df__branch}${ansi_cyan}${ansi_bold}\\W${ansi_bnormal}]\\\$${ansi_normal} "
 else
-        def_ps1="${ansi_reset}${ansi_bwhite}[${ansi_yellow}${BUILDENV_SHELL} ${ansi_bred}\\u${ansi_red}@${ansi_bred}\\h ${ansi_bmagenta}\${df__branch}${ansi_bcyan}\\W${ansi_bwhite}]\\\$${ansi_normal} "
+        def_ps1="${ansi_reset}${ansi_bnormal}[${ansi_reset}${ansi_yellow}${BUILDENV_SHELL} ${ansi_bred}\\u${ansi_red}@${ansi_bold}${ansi_bred}\\h${ansi_reset} ${ansi_green}\${df__branch}${ansi_cyan}${ansi_bold}\\W${ansi_bnormal}]\\\$${ansi_normal} "
 fi
 def_ps2="${ansi_reset}${ansi_bred}> ${ansi_normal}"
 
@@ -90,3 +91,21 @@ df__addpath /usr/local/mysql/bin
 df__addpath /opt/local/bin
 df__addpath "$HOME/Tools"
 export PATH
+
+lsset=0
+for i in /usr/gnu/bin/ls /opt/local/bin/gls /opt/csw/bin/gls ; do
+	if test -x $i ; then
+		alias ls='$i --color=auto'
+		lsset=1
+		break
+	fi
+done
+if test $lsset -eq 0 ; then
+	opsys="`uname 2>/dev/null`"
+	if test x"$opsys" = x"Darwin" ; then
+		alias ls='ls -G'
+	elif test x"$opsys" = x"Linux" ; then
+		alias ls='ls --color=auto'
+	fi
+fi
+
