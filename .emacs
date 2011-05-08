@@ -1,3 +1,13 @@
+;; If user-emacs-directory isn't defined because this is an old version,
+;; define it now.
+(unless (boundp 'user-emacs-directory)
+  (defvar user-emacs-directory "~/.emacs.d/"
+	"Directory beneath which additional per-user Emacs-specificfiles are placed. Various programs in Emacs store information in this directory. Note that this should end with a directory separator. See also ‘locate-user-emacs-file’."))
+
+;; Ensure the load-path contain the sensible things
+(add-to-list 'load-path "~/.emacs.d/common/")
+(add-to-list 'load-path "~/.emacs.d/site-lisp/")
+
 (require 'mouse)
 (global-font-lock-mode t)
 (setq inhibit-splash-screen t)
@@ -22,35 +32,38 @@
  '(xterm-mouse-mode t))
 (line-number-mode t)
 (column-number-mode t)
+(setq default-input-method "ucs")
+(set-default-coding-systems 'utf-8)
+
+(require 'color-theme)
+(require 'color-theme-solarized)
+(eval-after-load "color-theme"
+  '(progn
+     (color-theme-initialize)
+	 (color-theme-aalto-light)
+	 (if (eq window-system 'ns) (color-theme-solarized-light))
+	 (if (eq window-system 'w32) (color-theme-solarized-light))
+	 (if (eq window-system 'x) (color-theme-solarized-light))
+	 ))
+
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(default ((t (:stipple nil :background "black" :foreground "grey" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :family "Menlo"))))
- '(font-lock-comment-delimiter-face ((default (:foreground "green")) (((class color) (min-colors 8) (background dark)) nil)))
- '(font-lock-comment-face ((((class color) (min-colors 8) (background dark)) (:foreground "green"))))
- '(font-lock-constant-face ((((class color) (min-colors 8)) (:foreground "blue" :weight bold))))
- '(font-lock-function-name-face ((((class color) (min-colors 8)) (:foreground "cyan" :weight bold))))
- '(font-lock-keyword-face ((((class color) (min-colors 8)) (:foreground "magenta" :weight bold))))
- '(font-lock-preprocessor-face ((t (:background "cyan" :foreground "blue" :weight bold))))
- '(font-lock-string-face ((((class color) (min-colors 8)) (:foreground "green" :weight bold))))
- '(font-lock-type-face ((((class color) (min-colors 8)) (:foreground "red" :weight bold))))
- '(hl-line ((t (:inherit highlight :background "#1a1a00"))))
- '(minibuffer-prompt ((((background dark)) (:foreground "white" :weight bold))))
- '(mode-line ((t (:background "blue" :foreground "yellow" :weight bold)))))
- (setq default-input-method "ucs")
- (set-default-coding-systems 'utf-8)
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :family "Menlo")))))
 
-;; If user-emacs-directory isn't defined because this is an old version,
-;; define it now.
-(unless (boundp 'user-emacs-directory)
-  (defvar user-emacs-directory "~/.emacs.d/"
-	"Directory beneath which additional per-user Emacs-specificfiles are placed. Various programs in Emacs store information in this directory. Note that this should end with a directory separator. See also ‘locate-user-emacs-file’."))
-
-;; Ensure the load-path contain the sensible things
-(add-to-list 'load-path "~/.emacs.d/common/")
-(add-to-list 'load-path "~/.emacs.d/site-lisp/")
+;;  '(font-lock-comment-delimiter-face ((default (:foreground "green")) (((class color) (min-colors 8) (background dark)) nil)))
+;; '(font-lock-comment-face ((((class color) (min-colors 8) (background dark)) (:foreground "green"))))
+;; '(font-lock-constant-face ((((class color) (min-colors 8)) (:foreground "blue" :weight bold))))
+;; '(font-lock-function-name-face ((((class color) (min-colors 8)) (:foreground "cyan" :weight bold))))
+;; '(font-lock-keyword-face ((((class color) (min-colors 8)) (:foreground "magenta" :weight bold))))
+;; '(font-lock-preprocessor-face ((t (:background "cyan" :foreground "blue" :weight bold))))
+;; '(font-lock-string-face ((((class color) (min-colors 8)) (:foreground "green" :weight bold))))
+;; '(font-lock-type-face ((((class color) (min-colors 8)) (:foreground "red" :weight bold))))
+;; '(hl-line ((t (:inherit highlight :background "#1a1a00"))))
+;; '(minibuffer-prompt ((((background dark)) (:foreground "white" :weight bold))))
+;; '(mode-line ((t (:background "blue" :foreground "yellow" :weight bold)))))
 
 ;; I write a lot of PHP. Sue me.
 ;; (require 'php-mode)
@@ -77,7 +90,7 @@
 
 ;; Only do these on Mac OS X
 (if (eq window-system 'ns) (server-start))
-(if (eq window-system 'ns) (custom-set-variables '(global-hl-line-mode t)))
+;; (if (eq window-system 'ns) (custom-set-variables '(global-hl-line-mode t)))
 
 ;; Don't prompt for confirmation when closing a file launched by
 ;; emacsclient.
