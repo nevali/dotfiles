@@ -8,6 +8,7 @@ ansi_blue='\[\e[0m\e[34m\]'
 ansi_magenta='\[\e[0m\e[35m\]'
 ansi_cyan='\[\e[0m\e[36m\]'
 ansi_normal="${ansi_reset}"
+ansi_bnormal="${ansi_reset}${ansi_bold}"
 
 case "$TERM" in
         sun-color)
@@ -35,9 +36,9 @@ case "$TERM" in
 esac
 
 if test x"$BUILDENV_SHELL" = x"" ; then
-        def_ps1="${ansi_reset}${ansi_bwhite}[${ansi_byellow}\\u${ansi_yellow}@${ansi_byellow}\\h ${ansi_bmagenta}\${df__branch}${ansi_bcyan}\\W${ansi_bwhite}]\\\$${ansi_normal} "
+        def_ps1="${ansi_reset}${ansi_bnormal}[${ansi_bmagenta}\\u${ansi_magenta}@${ansi_bold}${ansi_bmagenta}\\h${ansi_reset} ${ansi_green}\${df__branch}${ansi_cyan}${ansi_bold}\\W${ansi_bnormal}]\\\$${ansi_normal} "
 else
-        def_ps1="${ansi_reset}${ansi_bwhite}[${ansi_yellow}${BUILDENV_SHELL} ${ansi_bred}\\u${ansi_red}@${ansi_bred}\\h ${ansi_bmagenta}\${df__branch}${ansi_bcyan}\\W${ansi_bwhite}]\\\$${ansi_normal} "
+        def_ps1="${ansi_reset}${ansi_bnormal}[${ansi_reset}${ansi_yellow}${BUILDENV_SHELL} ${ansi_bred}\\u${ansi_red}@${ansi_bold}${ansi_bred}\\h${ansi_reset} ${ansi_green}\${df__branch}${ansi_cyan}${ansi_bold}\\W${ansi_bnormal}]\\\$${ansi_normal} "
 fi
 def_ps2="${ansi_reset}${ansi_bred}> ${ansi_normal}"
 
@@ -48,16 +49,16 @@ fi
 df__xterm_title()
 {
 	test x"$NODENAME" = x"" && NODENAME=`echo $HOSTNAME|cut -f1 -d.`
-	printf "\033]1;$LOGNAME@$NODENAME\007"
+	printf "\033]1;%s@%s\007" "$LOGNAME" "$NODENAME"
 	dir=`pwd`
 	if test x"$dir" = x"$HOME" ; then
 	    dir='~'
 	else
-		dir=`basename $dir`
+		dir=`basename "$dir"`
 	fi
 	suf='$'
 	test x"$UID" = x"0" && suf='#'
-	printf "\033]2;[$LOGNAME@$NODENAME ${df__branch}${dir}]${suf}\007"
+	printf "\033]2;[%s@%s %s%s]%s\007" "$LOGNAME" "$NODENAME" "$df__branch" "$dir" "$suf"
 }
 
 df__vcbranch()
@@ -76,4 +77,42 @@ elif type -p jed 2>&1 >/dev/null ; then
     def_visual="jed"
 elif type -p nano 2>&1 >/dev/null ; then
     def_visual="nano"
+fi
+
+df__addpath()
+{
+	if test -d "$1" ; then
+	    case "$PATH" in
+	        "*:$1:*|*:$1|$1:*")
+				return
+				;;
+		    *)
+				PATH="$1:$PATH"
+				;;
+		esac
+	fi
+}
+
+df__addpath /usr/local/bin
+df__addpath /usr/local/git/bin
+df__addpath /usr/local/mysql/bin
+df__addpath /opt/local/bin
+df__addpath "$HOME/Tools"
+export PATH
+
+lsset=0
+for i in /usr/gnu/bin/ls /opt/local/bin/gls /opt/csw/bin/gls ; do
+	if test -x $i ; then
+		alias ls='$i --color=auto'
+		lsset=1
+		break
+	fi
+done
+if test $lsset -eq 0 ; then
+	opsys="`uname 2>/dev/null`"
+	if test x"$opsys" = x"Darwin" ; then
+		alias ls='ls -G'
+	elif test x"$opsys" = x"Linux" ; then
+		alias ls='ls --color=auto'
+	fi
 fi
