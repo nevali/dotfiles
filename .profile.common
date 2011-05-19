@@ -1,3 +1,5 @@
+# -*- sh -*-
+
 ansi_reset='\[\e[0m\]'
 ansi_bold='\[\e[1m\]'
 ansi_black='\[\e[0m\e[30m\]'
@@ -120,3 +122,13 @@ if test $lsset -eq 0 ; then
 		alias ls='ls --color=auto'
 	fi
 fi
+
+if test x"$TERM_PROGRAM" = x"Apple_Terminal" || test x"$TERM_PROGRAM" = x"iTerm.app" ; then
+	for d in /usr/local/bin /opt/local/bin "$HOME/bin" "$HOME/Tools" ; do
+		if test -x $d/kaleidoscope-git ; then
+		   GIT_EXTERNAL_DIFF="$d/kaleidoscope-git"
+		   export GIT_EXTERNAL_DIFF
+		fi
+    done
+fi
+
