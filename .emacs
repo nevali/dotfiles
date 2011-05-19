@@ -41,9 +41,9 @@
   '(progn
      (color-theme-initialize)
 	 (color-theme-aalto-light)
-	 (if (eq window-system 'ns) (color-theme-solarized-light))
-	 (if (eq window-system 'w32) (color-theme-solarized-light))
-	 (if (eq window-system 'x) (color-theme-solarized-light))
+	 (if (eq window-system 'ns) (color-theme-solarized-dark))
+	 (if (eq window-system 'w32) (color-theme-solarized-dark))
+	 (if (eq window-system 'x) (color-theme-solarized-dark))
 	 ))
 
 (custom-set-faces
