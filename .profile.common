@@ -71,6 +71,14 @@ df__vcbranch()
     fi
 }
 
+if type -p emacs 2>&1 >/dev/null ; then
+    def_visual="emacs"
+elif type -p jed 2>&1 >/dev/null ; then
+    def_visual="jed"
+elif type -p nano 2>&1 >/dev/null ; then
+    def_visual="nano"
+fi
+
 df__addpath()
 {
 	if test -d "$1" ; then
@@ -112,4 +120,3 @@ if test $lsset -eq 0 ; then
 		alias ls='ls --color=auto'
 	fi
 fi
-
