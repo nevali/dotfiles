@@ -1,0 +1,10 @@
+set mouse
+set cut
+set autoindent
+set brackets ""')>]}"
+set const
+set multibuffer
+set nonewlines
+#set rebinddelete
+set smarthome
+set tabsize 4
