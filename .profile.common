@@ -89,6 +89,10 @@ df__addpath /usr/local/bin
 df__addpath /usr/local/git/bin
 df__addpath /usr/local/mysql/bin
 df__addpath /opt/local/bin
+df__addpath /opt/xapian/bin
+df__addpath /opt/txsuite/bin
+df__addpath /opt/csw/bin
+df__addpath /usr/gnu/bin
 df__addpath "$HOME/Tools"
 export PATH
 
