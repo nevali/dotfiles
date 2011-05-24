@@ -46,6 +46,8 @@ def_ps2="${ansi_reset}${ansi_bred}> ${ansi_normal}"
 
 if test x"$TERM" = x"xterm" || test x"$TERM" = x"xterm-color" ; then
 	def_prompt_command="df__vcbranch;df__xterm_title"
+else
+	def_prompt_command="df__vcbranch"
 fi
 
 df__xterm_title()
