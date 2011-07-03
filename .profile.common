@@ -50,6 +50,18 @@ else
 	def_prompt_command="df__vcbranch"
 fi
 
+if test x"$TERM_PROGRAM" = x"Apple_Terminal" ; then
+	def_prompt_command="$def_prompt_command;update_terminal_cwd"
+fi
+
+update_terminal_cwd()
+{
+	local SEARCH=' '
+	local REPLACE='%20'
+	local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
+	printf '\e]7;%s\a' "$PWD_URL"
+}
+
 df__xterm_title()
 {
 	test x"$NODENAME" = x"" && NODENAME=`echo $HOSTNAME|cut -f1 -d.`
