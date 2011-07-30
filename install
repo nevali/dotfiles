@@ -1,7 +1,7 @@
 #! /bin/sh
 
 FILES='.emacs .muttrc .bashrc .git-ignores .CFUserTextEncoding .indent.pro
-.screenrc .plan .project .profile.common .profile .bashrc .nanorc .zshrc'
+.screenrc .plan .project .profile.common .profile .bashrc .nanorc .zshenv'
 
 here=`dirname $0`
 here=`cd $here && pwd`
