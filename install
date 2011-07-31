@@ -28,3 +28,9 @@ elif test -d $HOME/.emacs.d/common ; then
 fi
 ln -s $here/emacs.d $HOME/.emacs.d/common
 
+if test -d $HOME/Library ; then
+	echo "Installing files to $HOME/Library" >&2
+	find Library -type d -print -exec mkdir -p $HOME/\{\} \;
+	find Library -type f -print -exec ln -sf $here/\{\} $HOME/\{\} \;
+fi
+ 
