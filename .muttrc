@@ -115,4 +115,6 @@ unset confirmappend                     # Don't ask me about appending to files
 unset arrow_cursor                      # Use the bar cursor
 unset bounce_delivered                  # Don't include Delivered-to with bounces
 
+folder-hook     'imaps://.*imap.gmail.com'                     unset record
+
 source ~/.muttrc.local
