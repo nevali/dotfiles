@@ -160,9 +160,9 @@ if ls --version 2>/dev/null >/dev/null ; then
 fi
 
 if test -x "$HOME/.dircolors" ; then
-	eval "$HOME/.dircolors"
+	eval `"$HOME/.dircolors"`
 elif test $is_gnu_ls -eq 1 ; then
-	eval dircolors
+	eval `dircolors -b`
 fi
 CLICOLOR=1
 export CLICOLOR
