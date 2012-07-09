@@ -151,24 +151,42 @@ df__addpath /opt/ports/bin
 df__addpath "$HOME/Tools"
 export PATH
 
-lsset=0
-for i in /usr/gnu/bin/ls /opt/local/bin/gls /opt/csw/bin/gls ; do
-	if test -x $i ; then
-		alias ls='$i --color=auto'
-		lsset=1
-		break
-	fi
-done
-if test $lsset -eq 0 ; then
-	opsys="`uname 2>/dev/null`"
-	if test x"$opsys" = x"Darwin" ; then
-		alias ls='ls -G'
-	elif test x"$opsys" = x"Linux" ; then
-		alias ls='ls --color=auto'
-	fi
+## If 'ls' is GNU ls, then enable colourisation via 'ls --color=auto'
+## Otherwise, the alias (if any) is OS-dependent
+
+is_gnu_ls=0
+if ls --version 2>/dev/null >/dev/null ; then
+	is_gnu_ls=1
 fi
 
+if test -x "$HOME/.dircolors" ; then
+	eval "$HOME/.dircolors"
+elif test $is_gnu_ls -eq 1 ; then
+	eval dircolors
+fi
+CLICOLOR=1
+export CLICOLOR
+export LSCOLORS
+export LS_COLORS
+
+if test $is_gnu_ls -eq 1 ; then
+	alias ls='ls --color=auto'
+fi
+
+
+## Detect Mac OS X
+is_macosx=0
+if test x"$Apple_Ubiquity_Message" = x"" ; then
+	true
+else
+	is_macosx=1
+fi
 if test x"$TERM_PROGRAM" = x"Apple_Terminal" || test x"$TERM_PROGRAM" = x"iTerm.app" ; then
+	is_macosx=1
+fi
+
+## On Mac OS X, if Kaleidoscope is installed, use it for 'git diff'
+if test $is_macosx -eq 1 ; then
 	for d in /usr/local/bin /opt/local/bin "$HOME/bin" "$HOME/Tools" ; do
 		if test -x $d/kaleidoscope-git ; then
 		   GIT_EXTERNAL_DIFF="$d/kaleidoscope-git"
