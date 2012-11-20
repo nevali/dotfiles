@@ -48,7 +48,7 @@
 (eval-after-load "color-theme"
   '(progn
      (color-theme-initialize)
-	 (color-theme-aalto-light)
+	 (color-theme-dark-laptop)
 	 (if (eq window-system 'ns) (color-theme-solarized-dark))
 	 (if (eq window-system 'w32) (color-theme-solarized-dark))
 	 (if (eq window-system 'x) (color-theme-solarized-dark))
