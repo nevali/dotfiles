@@ -70,8 +70,8 @@ else
 	prompt_ps2='>'
 fi
 
-pbit_preamble="${nps}${ansi_reset}${ansi_bnormal}${npe}[${nps}${ansi_normal}\${df__time} "
-pbit_postamble="${nps}${ansi_bnormal}${npe}]${prompt_ind} ${nps}${ansi_normal}${npe}"
+pbit_preamble="${nps}${ansi_reset}${ansi_bnormal}${npe}[${nps}${ansi_normal}${npe}\${df__time} "
+pbit_postamble="${nps}${ansi_bnormal}${npe}]${nps}${ansi_bred}${npe}${prompt_ind} ${nps}${ansi_normal}${npe}"
 
 if test -z "$SSH_CLIENT" && test -z"$SSH_CONNECTION" ; then
 	pbit_user="${nps}${ansi_bgreen}${npe}${prompt_user}"
