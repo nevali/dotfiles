@@ -70,11 +70,22 @@ else
 	prompt_ps2='>'
 fi
 
-if test x"$BUILDENV_SHELL" = x"" ; then
-    def_ps1="${nps}${ansi_reset}${ansi_bnormal}${npe}[${nps}${ansi_bmagenta}${npe}${prompt_user}${nps}${ansi_magenta}${npe}@${nps}${ansi_bold}${ansi_bmagenta}${npe}${prompt_host}${nps}${ansi_reset}${ansi_green}${npe}\${df__branch}${nps}${ansi_cyan}${ansi_bold}${npe}${prompt_path}${nps}${ansi_bnormal}${npe}]${prompt_ind}${nps}${ansi_normal}${npe} "
+pbit_preamble="${nps}${ansi_reset}${ansi_bnormal}${npe}[${nps}${ansi_normal}\${df__time} "
+pbit_postamble="${nps}${ansi_bnormal}${npe}]${prompt_ind} ${nps}${ansi_normal}${npe}"
+
+if test -z "$SSH_CLIENT" && test -z"$SSH_CONNECTION" ; then
+	pbit_user="${nps}${ansi_bgreen}${npe}${prompt_user}"
+	SHELL_LOCATION="local"
 else
-    def_ps1="${nps}${ansi_reset}${ansi_bnormal}${npe}[${nps}${ansi_reset}${ansi_yellow}${npe}${BUILDENV_SHELL} ${nps}${ansi_bred}${npe}${prompt_user}${nps}${ansi_red}${npe}@${nps}${ansi_bold}${ansi_bred}${npe}${prompt_host}${nps}${ansi_reset}${ansi_green}${npe}\${df__branch}${nps}${ansi_cyan}${ansi_bold}${npe}${prompt_path}${nps}${ansi_bnormal}${npe}]${prompt_ind}${nps}${ansi_normal}${npe} "
+	pbit_user="${nps}${ansi_bcyan}${npe}${prompt_user}${nps}${ansi_green}${npe}@${nps}${ansi_bcyan}${npe}${prompt_host}"
+	SHELL_LOCATION="remote"
 fi
+export SHELL_LOCATION
+
+pbit_vcs="${nps}${ansi_bblue}${npe}\${df__branch}${nps}${ansi_cyan}${ansi_bold}${npe}"
+pbit_path="${nps}${ansi_reset}${ansi_bmagenta}${prompt_path}"
+
+def_ps1="${pbit_preamble}${pbit_user}${pbit_vcs}${pbit_path}${pbit_postamble}"
 def_ps2="${nps}${ansi_reset}${ansi_bred}${npe}${prompt_ps2}${nps}${ansi_normal}${npe} "
 def_prompt_command="precmd"
 
@@ -105,6 +116,7 @@ precmd()
 		PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
 		printf "\e]7;%s\a" "$PWD_URL/"
 	fi
+	df__time=`date +%H%M%S`
 }
 
 df__vcbranch()
