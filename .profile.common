@@ -83,7 +83,7 @@ fi
 export SHELL_LOCATION
 
 pbit_vcs="${nps}${ansi_bblue}${npe}\${df__branch}${nps}${ansi_cyan}${ansi_bold}${npe}"
-pbit_path="${nps}${ansi_reset}${ansi_bmagenta}${prompt_path}"
+pbit_path="${nps}${ansi_reset}${ansi_bmagenta}${npe}${prompt_path}"
 
 def_ps1="${pbit_preamble}${pbit_user}${pbit_vcs}${pbit_path}${pbit_postamble}"
 def_ps2="${nps}${ansi_reset}${ansi_bred}${npe}${prompt_ps2}${nps}${ansi_normal}${npe} "
