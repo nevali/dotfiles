@@ -1,0 +1,137 @@
+#! /bin/sh
+
+set -x
+
+#### General preferences
+
+# Appearance (graphite)
+defaults write NSGlobalDomain AppleAquaColorVariant -integer 6
+
+# Highlight colour (grey)
+defaults write NSGlobalDomain AppleHighlightColor "0.500000 0.500000 0.500000"
+
+# Sidebar icon size (small)
+defaults write NSTableViewDefaultSizeMode -integer 1
+
+# Show scroll bars (automatically)
+defaults write NSGlobalDomain AppleShowScrollBars Automatic
+
+# Click in the scroll bar to (jump to next page)
+defaults write NSGlobalDomain AppleScrollAnimationEnabled -bool YES
+
+# Ask to keep changes when closing documents (yes)
+defaults write NSGlobalDomain NSCloseAlwaysConfirmsChanges -bool YES
+
+# Close windows when quitting an application (no)
+defaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool YES
+
+# Recent items (10)
+
+# Use LCD font smoothing when available
+
+defaults write NSGlobalDomain AppleAntiAliasingThreshold -integer 4
+
+# Save new documents to iCloud by default (no)
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool NO
+
+#### Desktop and screen saver
+
+# Translucent menu bar (on)
+defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool YES
+
+#### Dock
+
+# Magnification (off)
+defaults write com.apple.dock magnification -integer 0
+
+# Position (bottom)
+defaults write com.apple.dock orientation bottom
+defaults write com.apple.dock pinning middle
+
+# Minimize windows using (Genie effect)
+defaults write com.apple.dock mineffect suck
+
+# Double-click a window's title bar to minimize (no)
+defaults write NSGlobalDomain AppleMiniaturizeOnDoubleClick -bool NO
+
+# Minimize windows into application icon (no)
+defaults write com.apple.dock minimize-to-application -bool NO
+
+# Animate opening applications (yes)
+defaults delete com.apple.dock no-bouncing 2>/dev/null
+
+# Automatically hide and show the dock (no)
+defaults write com.apple.dock autohide -bool NO
+
+# Show indicator lights for applications (yes)
+defaults write com.apple.dock show-process-indicators -bool YES
+
+# Show hidden applications as translucent (yes)
+defaults write com.apple.dock showHidden -bool YES
+
+#### Mission Control
+
+# Show Dashboard as a Space (no)
+
+defaults write com.apple.dock dashboard-in-overlay -bool YES
+
+# Automatically rearrange Spaces based on most recent use (yes)
+defaults write com.apple.dock mru-spaces -bool YES
+
+# When switching to an application, switch to a Space with open windows for the application (yes)
+defaults write NSGlobalDomain AppleSpacesSwitchOnActivate -bool YES
+
+# Group windows by application
+defaults write com.apple.dock expose-group-by-app -bool YES
+
+# Displays have separate spaces
+
+#### Finder
+
+# Show path bar (yes)
+defaults write com.apple.finder ShowPathBar -bool YES
+
+# Write .DS_Store files to network volumes (no)
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool YES
+
+#### Language & Region
+
+# Preferred languages: en_GB, en
+defaults write NSGlobalDomain AppleUserLanguages -integer 2
+defaults write NSGlobalDomain AppleLanguages -array en-GB en
+defaults write NSGlobalDomain NSPreferredSpellServerLanguage en_GB
+defaults write NSPreferredSpellServerVendors -dict en_GB Apple
+
+# Region: United Kingdom
+defaults write NSGlobalDomain AppleLocale en_GB
+defaults write NSGlobalDomain AppleMeasurementUnits Centimetres
+defaults write NSGlobalDomain AppleCollationOrder root
+defaults write NSGlobalDomain AppleICUNumberSymbols -dict 1 ""
+defaults write NSGlobalDomain AppleICUDateFormatStrings -dict 1 "yyyy-MM-dd" 2 " yyyy-MMM-dd" 3 "EEE d MMMM y"
+defaults write NSGlobalDomain AppleMetricUnits -bool YES
+
+#### Keyboard
+
+# Correct spelling automatically (no)
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool NO
+defaults write NSGlobalDomain WebAutomaticSpellingCorrectionEnabled -bool NO
+
+# Spelling (Automatic by language)
+defaults write NSGlobalDomain NSSpellCheckerAutomaticallyIdentifiesLanguages -bool YES
+
+# Full Keyboard Access (All controls)
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
+
+#### Terminal
+
+# Shells open with (Default login shell)
+defaults write com.apple.terminal Shell ""
+
+# Encodings (UTF-8, Mac OS Roman, ISO Latin 1, DOS Latin 1, Windows Latin 1, ASCII, NextStep, non-lossy ASCII)
+defaults write com.apple.terminal StringEncodings -array 4 30 1 5 12 2 7 2147484688
+
+# New tabs open with (Default working directory)
+defaults write com.apple.terminal NewTabWorkingDirectoryBehavior -int 2
+
+# Window settings
+defaults import com.apple.terminal TerminalProfiles.plist

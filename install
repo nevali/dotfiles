@@ -33,4 +33,8 @@ if test -d $HOME/Library ; then
 	find Library -type d -print -exec mkdir -p $HOME/\{\} \;
 	find Library -type f -print -exec ln -sf $here/\{\} $HOME/\{\} \;
 fi
- 
+if test x"`uname -s`" = x"Darwin" ; then
+	cd "$here"
+	./install-defaults
+fi
+
