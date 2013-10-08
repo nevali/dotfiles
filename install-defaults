@@ -100,7 +100,7 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool YES
 defaults write NSGlobalDomain AppleUserLanguages -integer 2
 defaults write NSGlobalDomain AppleLanguages -array en-GB en
 defaults write NSGlobalDomain NSPreferredSpellServerLanguage en_GB
-defaults write NSPreferredSpellServerVendors -dict en_GB Apple
+defaults write NSGlobalDomain NSPreferredSpellServerVendors -dict en_GB Apple
 
 # Region: United Kingdom
 defaults write NSGlobalDomain AppleLocale en_GB
