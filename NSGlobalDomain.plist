@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Appearance (graphite) -->
+	<key>AppleAquaColorVariant</key>
+	<integer>6</integer>
+
+	<!-- Highlight colour (grey) -->
+	<key>AppleHighlightColor</key>
+	<string>0.500000 0.500000 0.500000</string>
+
+	<!-- Sidebar icon size (small) -->
+	<key>NSTableViewDefaultSizeMode</key>
+	<integer>1</integer>
+
+	<!-- Show scroll bars (automatically) -->
+	<key>AppleShowScrollBars</key>
+	<string>Automatic</string>
+
+	<!-- Click in the scroll bar to (jump to next page) -->
+	<key>AppleScrollAnimationEnabled</key>
+	<true />
+
+	<!-- Ask to keep changes when closing documents (yes) -->
+	<key>NSCloseAlwaysConfirmsChanges</key>
+	<true />
+
+	<!-- Close windows when quitting an application (no) -->
+	<key>NSQuitAlwaysKeepsWindows</key>
+	<true />
+
+	<!-- Recent items (10) -->
+
+	<!-- Use LCD font smoothing when available -->
+	<key>AppleAntiAliasingThreshold</key>
+	<integer>4</integer>
+
+	<!-- Save new documents to iCloud by default (no) -->
+	<key>NSDocumentSaveNewDocumentsToCloud</key>
+	<false />
+
+	<!-- Translucent menu bar (on) -->
+	<key>AppleEnableMenuBarTransparency</key>
+	<true />
+
+	<!-- Double-click a window's title bar to minimize (no) -->
+	<key>AppleMiniaturizeOnDoubleClick</key>
+	<false />
+
+	<!-- When switching to an application, switch to a Space with open windows for the application (yes) -->
+	<key>AppleSpacesSwitchOnActivate</key>
+	<true />
+
+	<!-- Correct spelling automatically (no) -->
+	<key>NSAutomaticSpellingCorrectionEnabled</key>
+	<false />
+	<key>WebAutomaticSpellingCorrectionEnabled</key>
+	<false />
+	
+	<!-- Spelling (Automatic by language) -->
+	<key>NSSpellCheckerAutomaticallyIdentifiesLanguages</key>
+	<true />
+
+	<!-- Full Keyboard Access (All controls) -->
+	<key>AppleKeyboardUIMode</key>
+	<integer>2</integer>
+
+	<!-- Preferred languages: en_GB, en -->
+	<key>AppleUserLanguages</key>
+	<integer>2</integer>
+	<key>AppleLanguages</key>
+	<array>
+		<string>en-GB</string>
+		<string>en</string>
+	</array>
+	<key>NSPreferredSpellServerLanguage</key>
+	<string>en_GB</string>
+	<key>NSPreferredSpellServerVendors</key>
+	<dict>
+		<key>en_GB</key>
+		<string>Apple</string>
+	</dict>
+
+	<!-- Region: United Kingdom -->
+	<key>AppleLocale</key>
+	<string>en_GB</string>
+	<key>AppleMeasurementUnits</key>
+	<string>Centimetres</string>
+	<key>AppleCollationOrder</key>
+	<string>root</string>
+	<key>AppleICUNumberSymbols</key>
+	<dict>
+		<key>1</key>
+		<string></string>
+	</dict>
+	<key>AppleICUDateFormatStrings</key>
+	<dict>
+		<key>1</key>
+		<string>yyyy-MM-dd</string>
+		<key>2</key>
+		<string> yyyy-MMM-dd</string>
+		<key>3</key>
+		<string>EEE d MMMM y</string>
+	</dict>
+	<key>AppleMetricUnits</key>
+	<true />
+</dict>
+</plist>
