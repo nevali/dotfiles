@@ -24,7 +24,7 @@ test x"$VISUAL" = x"" || export VISUAL
 
 if [ $is_interactive -eq 1 ] && [ $is_login -eq 1 ] ; then
 	col=96
-	[ $is_local ] && col=95
+	[ $is_local -eq 1 ] && col=95
 	printf "\033[0m\033[${col}m\033[1m"
 	printf -- "-%.0s" {1..78}
 	printf "\033[0m\n\033[1m"
