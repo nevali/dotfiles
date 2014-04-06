@@ -1,8 +1,30 @@
 # -*- sh -*-
 
+## Determine the name of the shell
 shell_name="sh"
 test x"$ZSH_VERSION" = x"" || shell_name="zsh"
 test x"$BASH_VERSION" = x"" || shell_name="bash"
+
+## Determine whether this is an interactive shell
+is_interactive=0
+[[ $- == *i* ]] && is_interactive=1
+
+## Determine whether this is a login shell
+is_login=0
+case "$shell_name" in
+	bash)
+		shopt -q login_shell && is_login=1
+		;;
+	zsh)
+		[[ -o login ]] && is_login=1
+		;;
+esac
+
+## Detect Mac OS X
+is_macosx=0
+[ x"$Apple_Ubiquity_Message" = x"" ] || is_macosx=1
+[ x"$TERM_PROGRAM" = x"Apple_Terminal" ] && is_macosx=1
+[ x"$TERM_PROGRAM" = x"iTerm.app" ] && is_macosx=1
 
 nps=`printf "\001"`
 npe=`printf "\002"`
@@ -76,9 +98,11 @@ pbit_postamble="${nps}${ansi_bnormal}${npe}]${nps}${ansi_bred}${npe}${prompt_ind
 if test -z "$SSH_CLIENT" && test -z"$SSH_CONNECTION" ; then
 	pbit_user="${nps}${ansi_bgreen}${npe}${prompt_user}"
 	SHELL_LOCATION="local"
+	is_local=1
 else
 	pbit_user="${nps}${ansi_bcyan}${npe}${prompt_user}${nps}${ansi_green}${npe}@${nps}${ansi_bcyan}${npe}${prompt_host}"
 	SHELL_LOCATION="remote"
+	is_local=0
 fi
 export SHELL_LOCATION
 
@@ -185,17 +209,6 @@ if test $is_gnu_ls -eq 1 ; then
 	alias ls='ls --color=auto'
 fi
 
-
-## Detect Mac OS X
-is_macosx=0
-if test x"$Apple_Ubiquity_Message" = x"" ; then
-	true
-else
-	is_macosx=1
-fi
-if test x"$TERM_PROGRAM" = x"Apple_Terminal" || test x"$TERM_PROGRAM" = x"iTerm.app" ; then
-	is_macosx=1
-fi
 
 ## On Mac OS X, if Kaleidoscope is installed, use it for 'git diff'
 if test $is_macosx -eq 1 ; then

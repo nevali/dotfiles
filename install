@@ -1,6 +1,6 @@
 #! /bin/sh
 
-FILES='.emacs .muttrc .bashrc .git-ignores .CFUserTextEncoding .indent.pro
+FILES='.emacs .muttrc .bashrc .git-ignores .indent.pro
 .screenrc .plan .project .profile.common .profile .bashrc .nanorc .zshenv'
 
 here=`dirname $0`
@@ -15,6 +15,9 @@ for f in $FILES ; do
     fi
     ln -s $here/$f $HOME/$f
 done
+
+rm -f $HOME/.CFUserTextEncoding
+cp .CFUserTextEncoding $HOME
 
 if test -d $HOME/.emacs.d ; then
     true
@@ -31,10 +34,6 @@ ln -s $here/emacs.d $HOME/.emacs.d/common
 if test -d $HOME/Library ; then
 	echo "Installing files to $HOME/Library" >&2
 	find Library -type d -print -exec mkdir -p $HOME/\{\} \;
-	find Library -type f -print -exec ln -sf $here/\{\} $HOME/\{\} \;
+	find Library -type f -exec rm -f $HOME/\{\} \;
+	find Library -type f -print -exec cp $here/\{\} $HOME/\{\} \;
 fi
-if test x"`uname -s`" = x"Darwin" ; then
-	cd "$here"
-	./install-defaults
-fi
-
