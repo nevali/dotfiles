@@ -220,3 +220,8 @@ if test $is_macosx -eq 1 ; then
     done
 fi
 
+## Set CVS_RSH
+CVS_RSH=ssh
+export CVS_SSH
+
+
