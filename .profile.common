@@ -26,6 +26,8 @@ is_macosx=0
 [ x"$TERM_PROGRAM" = x"Apple_Terminal" ] && is_macosx=1
 [ x"$TERM_PROGRAM" = x"iTerm.app" ] && is_macosx=1
 
+## Terminal escape sequences
+have_colorterm=0
 nps=`printf "\001"`
 npe=`printf "\002"`
 esc=`printf "\033"`
@@ -43,7 +45,7 @@ ansi_normal="${ansi_reset}"
 ansi_bnormal="${ansi_reset}${ansi_bold}"
 
 case "$TERM" in
-    sun-color)
+    sun-color|linux)
         ansi_white="${ansi_normal}"
         ansi_bblack="${ansi_black}${ansi_bold}"
         ansi_bred="${ansi_red}${ansi_bold}"
@@ -53,8 +55,9 @@ case "$TERM" in
         ansi_bmagenta="${ansi_magenta}${ansi_bold}"
         ansi_bcyan="${ansi_cyan}${ansi_bold}"
         ansi_bwhite="${ansi_white}${ansi_bold}"
+        have_colorterm=1
         ;;
-    *)
+    xterm|xterm-color|xterm-256color)
         ansi_white="${esc}[37m"
         ansi_bblack="${esc}[90m"
         ansi_bred="${esc}[91m"
@@ -63,7 +66,30 @@ case "$TERM" in
         ansi_bblue="${esc}[94m"
         ansi_bmagenta="${esc}[95m"
         ansi_bcyan="${esc}[96m"
-        ansi_bwhite="${esc}[97m"
+        ansi_bwhite="${esc}[97m"    
+    	have_colorterm=1
+ 		;;   	
+    *)
+    	ansi_reset=""
+		ansi_bold=""
+		ansi_black=""
+		ansi_red=""
+		ansi_green=""
+		ansi_yellow=""
+		ansi_blue=""
+		ansi_magenta=""
+		ansi_cyan=""
+		ansi_normal=""
+		ansi_bnormal=""
+        ansi_white=""
+        ansi_bblack=""
+        ansi_bred=""
+        ansi_bgreen=""
+        ansi_byellow=""
+        ansi_bblue=""
+        ansi_bmagenta=""
+        ansi_bcyan=""
+        ansi_bwhite=""
         ;;
 esac
 
