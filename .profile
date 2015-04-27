@@ -23,16 +23,16 @@ fi
 test x"$VISUAL" = x"" || export VISUAL
 
 if [ $is_interactive -eq 1 ] && [ $is_login -eq 1 ] ; then
-	col=96
-	[ $is_local -eq 1 ] && col=95
-	printf "\033[0m\033[${col}m\033[1m"
+	col="${ansi_byellow}"
+	[ $is_local ] && col="${ansi_bmagenta}"
+	printf "${ansi_reset}${col}"
 	printf -- "-%.0s" {1..78}
-	printf "\033[0m\n\033[1m"
-	printf "\033[1m%s@%s - %s (%s)\033[0m\n" "`whoami`" ""`hostname`"" "`uname -sr`" "`uname -m`"
+	printf "${ansi_reset}\n"
+	printf "${ansi_byellow}%s@%s - %s (%s)${ansi_reset}\n" "`whoami`" ""`hostname`"" "`uname -sr`" "`uname -m`"
 	uptime
 	date +"%A %e %B %Y %H:%M:%S %z (%Z)"
-	printf "\033[0m\033[${col}m\033[1m"
+	printf "${ansi_reset}${col}"
 	printf -- "-%.0s" {1..78}
-	printf "\033[0m\n"
+	printf "${ansi_reset}\n"
 fi
 
