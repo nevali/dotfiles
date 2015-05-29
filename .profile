@@ -31,7 +31,7 @@ if [ $is_interactive -eq 1 ] && [ $is_login -eq 1 ] ; then
 	printf "${col}%s@%s - %s (%s)${ansi_reset}\n" "`whoami`" ""`hostname`"" "`uname -sr`" "`uname -m`"
 	uptime
 	date=`date +"%A %e %B %Y %H:%M:%S %z (%Z)"`
-	printf "${ansi_bwhite}%s\n" "$date"
+	printf "${ansi_bwhite} %s\n" "$date"
 	printf "${ansi_reset}${col}"
 	printf -- "-%.0s" {1..78}
 	printf "${ansi_reset}\n"
