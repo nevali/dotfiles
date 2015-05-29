@@ -24,7 +24,7 @@ test x"$VISUAL" = x"" || export VISUAL
 
 if [ $is_interactive -eq 1 ] && [ $is_login -eq 1 ] ; then
 	col="${ansi_byellow}"
-	[ $is_local ] && col="${ansi_bmagenta}"
+	[ $is_local -eq 1 ] && col="${ansi_bmagenta}"
 	printf "${ansi_reset}${col}"
 	printf -- "-%.0s" {1..78}
 	printf "${ansi_reset}\n"
