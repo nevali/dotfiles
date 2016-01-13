@@ -45,32 +45,32 @@ ansi_normal="${ansi_reset}"
 ansi_bnormal="${ansi_reset}${ansi_bold}"
 
 case "$TERM" in
-    sun-color|linux)
-        ansi_white="${ansi_normal}"
-        ansi_bblack="${ansi_black}${ansi_bold}"
-        ansi_bred="${ansi_red}${ansi_bold}"
-        ansi_bgreen="${ansi_green}${ansi_bold}"
-        ansi_byellow="${ansi_yellow}${ansi_bold}"
-        ansi_bblue="${ansi_blue}${ansi_bold}"
-        ansi_bmagenta="${ansi_magenta}${ansi_bold}"
-        ansi_bcyan="${ansi_cyan}${ansi_bold}"
-        ansi_bwhite="${ansi_white}${ansi_bold}"
-        have_colorterm=1
-        ;;
-    xterm|xterm-color|xterm-256color)
-        ansi_white="${esc}[37m"
-        ansi_bblack="${esc}[90m"
-        ansi_bred="${esc}[91m"
-        ansi_bgreen="${esc}[92m"
-        ansi_byellow="${esc}[93m"
-        ansi_bblue="${esc}[94m"
-        ansi_bmagenta="${esc}[95m"
-        ansi_bcyan="${esc}[96m"
-        ansi_bwhite="${esc}[97m"    
-    	have_colorterm=1
- 		;;   	
-    *)
-    	ansi_reset=""
+	sun-color|linux)
+		ansi_white="${ansi_normal}"
+		ansi_bblack="${ansi_black}${ansi_bold}"
+		ansi_bred="${ansi_red}${ansi_bold}"
+		ansi_bgreen="${ansi_green}${ansi_bold}"
+		ansi_byellow="${ansi_yellow}${ansi_bold}"
+		ansi_bblue="${ansi_blue}${ansi_bold}"
+		ansi_bmagenta="${ansi_magenta}${ansi_bold}"
+		ansi_bcyan="${ansi_cyan}${ansi_bold}"
+		ansi_bwhite="${ansi_white}${ansi_bold}"
+		have_colorterm=1
+		;;
+	xterm|xterm-color|xterm-256color)
+		ansi_white="${esc}[37m"
+		ansi_bblack="${esc}[90m"
+		ansi_bred="${esc}[91m"
+		ansi_bgreen="${esc}[92m"
+		ansi_byellow="${esc}[93m"
+		ansi_bblue="${esc}[94m"
+		ansi_bmagenta="${esc}[95m"
+		ansi_bcyan="${esc}[96m"
+		ansi_bwhite="${esc}[97m"    
+		have_colorterm=1
+		;;
+	*)
+		ansi_reset=""
 		ansi_bold=""
 		ansi_black=""
 		ansi_red=""
@@ -81,16 +81,16 @@ case "$TERM" in
 		ansi_cyan=""
 		ansi_normal=""
 		ansi_bnormal=""
-        ansi_white=""
-        ansi_bblack=""
-        ansi_bred=""
-        ansi_bgreen=""
-        ansi_byellow=""
-        ansi_bblue=""
-        ansi_bmagenta=""
-        ansi_bcyan=""
-        ansi_bwhite=""
-        ;;
+		ansi_white=""
+		ansi_bblack=""
+		ansi_bred=""
+		ansi_bgreen=""
+		ansi_byellow=""
+		ansi_bblue=""
+		ansi_bmagenta=""
+		ansi_bcyan=""
+		ansi_bwhite=""
+		;;
 esac
 
 if test $shell_name = zsh ; then
@@ -139,6 +139,16 @@ def_ps1="${pbit_preamble}${pbit_user}${pbit_vcs}${pbit_path}${pbit_postamble}"
 def_ps2="${nps}${ansi_reset}${ansi_bred}${npe}${prompt_ps2}${nps}${ansi_normal}${npe} "
 def_prompt_command="precmd"
 
+if type -p emacs 2>&1 >/dev/null ; then
+    def_visual="emacs"
+elif type -p jed 2>&1 >/dev/null ; then
+    def_visual="jed"
+elif type -p nano 2>&1 >/dev/null ; then
+    def_visual="nano"
+fi
+
+## Update shell variables used when evaluating $PS1 (including updating the
+## window title and, on Mac OS X, current working directory)
 precmd()
 {
 	df__vcbranch
@@ -169,34 +179,28 @@ precmd()
 	df__time=`date +%H%M%S`
 }
 
+## Determine what VCS branch, if any, the CWD is on
 df__vcbranch()
 {
-    branch=`( git symbolic-ref HEAD | sed -e 's!^refs/heads/!!' ) 2>/dev/null`
+	branch=`( git symbolic-ref HEAD | sed -e 's!^refs/heads/!!' ) 2>/dev/null`
 	if test x"$branch" = x"" ; then
-	   df__branch=''
+		df__branch=''
 	else
-	   df__branch=" git:$branch"
-    fi
+		df__branch=" git:$branch"
+	fi
 }
 
-if type -p emacs 2>&1 >/dev/null ; then
-    def_visual="emacs"
-elif type -p jed 2>&1 >/dev/null ; then
-    def_visual="jed"
-elif type -p nano 2>&1 >/dev/null ; then
-    def_visual="nano"
-fi
-
+## Add a location to $PATH if it exists
 df__addpath()
 {
 	if test -d "$1" ; then
-	    case "$PATH" in
-	        "*:$1:*|*:$1|$1:*")
-				return
-				;;
-		    *)
-				PATH="$1:$PATH"
-				;;
+	case "$PATH" in
+		"*:$1:*|*:$1|$1:*")
+			return
+			;;
+		*)
+			PATH="$1:$PATH"
+			;;
 		esac
 	fi
 }
@@ -217,39 +221,62 @@ export PATH
 
 ## If 'ls' is GNU ls, then enable colourisation via 'ls --color=auto'
 ## Otherwise, the alias (if any) is OS-dependent
-
 is_gnu_ls=0
 if ls --version 2>/dev/null >/dev/null ; then
 	is_gnu_ls=1
 fi
-
 if test -x "$HOME/.dircolors" ; then
 	eval `"$HOME/.dircolors"`
 elif test $is_gnu_ls -eq 1 ; then
 	eval `dircolors -b`
 fi
+if test $is_gnu_ls -eq 1 ; then
+	alias ls='ls --color=auto'
+fi
+
 CLICOLOR=1
 export CLICOLOR
 export LSCOLORS
 export LS_COLORS
 
-if test $is_gnu_ls -eq 1 ; then
-	alias ls='ls --color=auto'
-fi
-
-
-## On Mac OS X, if Kaleidoscope is installed, use it for 'git diff'
-if test $is_macosx -eq 1 ; then
+## On Mac OS X interactive shells:
+# if Kaleidoscope is installed, use it for 'git diff' and 'svn diff'
+# if TextMate's command-line integration is available, use it as $VISUAL
+if test $is_macosx -eq 1 && test $is_interactive -eq 1 ; then
 	for d in /usr/local/bin /opt/local/bin "$HOME/bin" "$HOME/Tools" /Volumes/iDisk/Tools ; do
-		if test -x $d/kaleidoscope-git ; then
+		if test -x "$d/kaleidoscope-git" ; then
 		   GIT_EXTERNAL_DIFF="$d/kaleidoscope-git"
 		   export GIT_EXTERNAL_DIFF
 		fi
-    done
+		if test -x "$d/ksdiff" ; then
+			SVN_EXTERNAL_DIFF="$d/ksdiff"
+			export SVN_EXTERNAL_DIFF
+		fi
+		if test -x "$d/mate" ; then
+			def_visual="$d/mate -w"
+			export VISUAL
+		fi
+	done
 fi
 
 ## Set CVS_RSH
 CVS_RSH=ssh
 export CVS_SSH
 
+## In a new login shell, print a banner
+if [ $is_interactive -eq 1 ] && [ $is_login -eq 1 ] ; then
+	col="${ansi_byellow}"
+	[ $is_local -eq 1 ] && col="${ansi_bmagenta}"
+	printf "${ansi_reset}${col}"
+	printf -- "-%.0s" {1..78}
+	printf "${ansi_reset}\n"
+	printf "${col}%s@%s - %s (%s)${ansi_reset}\n" "`whoami`" ""`hostname`"" "`uname -sr`" "`uname -m`"
+	uptime=$(echo `uptime`)
+	printf "${ansi_reset} %s\n" "$uptime"
+	date=`date +"%A %e %B %Y %H:%M:%S %z (%Z)"`
+	printf "${ansi_bwhite} %s\n" "$date"
+	printf "${ansi_reset}${col}"
+	printf -- "-%.0s" {1..78}
+	printf "${ansi_reset}\n"
+fi
 

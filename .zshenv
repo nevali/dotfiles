@@ -2,13 +2,13 @@ if test -r "$HOME/.profile.common" ; then
 	. "$HOME/.profile.common"
 fi
 if test x"$SHLVL" = x"1" && test -r /etc/profile.local ; then
-    . /etc/profile.local
+	. /etc/profile.local
 fi
 if test x"$SHLVL" = x"1" && test -r "$HOME/.profile.local" ; then
-    . "$HOME/.profile.local"
+	. "$HOME/.profile.local"
 fi
 if test -r "$HOME/.zshrc.local" ; then
-    . "$HOME/.zshenv.local"
+	. "$HOME/.zshenv.local"
 fi
 if test x"$PS1" = x"%m%#" ; then
 	PS1="$def_ps1"
