@@ -23,6 +23,7 @@ if [ $is_interactive -eq 1 ] ; then
 	then
 		PROMPT_COMMAND="$def_prompt_command"
 	fi
+	test x"$shell_name" = x"bash" && source $HOME/.iterm2_shell_integration.bash
 fi
 
 if test x"$VISUAL" = x"" ; then
