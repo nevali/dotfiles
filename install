@@ -1,19 +1,19 @@
 #! /bin/sh
 
 FILES='.emacs .muttrc .bashrc .git-ignores .indent.pro
-.screenrc .plan .project .profile.common .profile .bashrc .nanorc .zshenv
+.screenrc .plan .project .pgpkey .profile.common .profile .bashrc .nanorc .zshenv
 .iterm2_shell_integration.bash'
 
 here=`dirname $0`
 here=`cd $here && pwd`
 for f in $FILES ; do
-    if test -r $HOME/$f ; then
 	if test -h $HOME/$f ; then
-	    rm $HOME/$f || continue
-	else
+	    echo "- Removing existing symbolic link at $HOME/$f" >&2
+	    rm $HOME/$f
+	elif test -a $HOME/$f ; then
+	    echo "- Moving existing $HOME/$f out of the way" >&2
 	    mv $HOME/$f $HOME/$f.dotfiles-backup-`date +%Y%m%d%H%M%S`
         fi
-    fi
     ln -s $here/$f $HOME/$f
 done
 
