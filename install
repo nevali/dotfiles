@@ -10,7 +10,7 @@ for f in $FILES ; do
 	if test -h $HOME/.$f ; then
 	    echo "- Removing existing symbolic link at $HOME/.$f" >&2
 	    rm $HOME/.$f
-	elif test -a $HOME/.$f ; then
+	elif test -e $HOME/.$f ; then
 	    echo "- Moving existing $HOME/$f out of the way" >&2
 	    mv $HOME/.$f $HOME/.$f.dotfiles-backup-`date +%Y%m%d%H%M%S`
         fi
