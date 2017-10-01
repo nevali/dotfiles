@@ -1,8 +1,10 @@
 #! /bin/sh
 
 FILES='emacs muttrc bashrc git-ignores indent.pro screenrc plan project
-pgpkey profile.common profile bashrc nanorc zshenv tmux.conf
-iterm2_shell_integration.bash'
+pgpkey profile bashrc nanorc zshenv tmux.conf
+iterm2_shell_integration.bash
+profile.init.sh profile.colours.sh profile.dircolors.sh profile.prompt.sh
+profile.macosx.sh profile.banner.sh profile.paths.sh profile.fini.sh'
 
 here=`dirname $0`
 here=`cd $here && pwd`
