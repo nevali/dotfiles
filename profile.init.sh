@@ -70,3 +70,6 @@ if [ $is_interactive -eq 1 ] ; then
 		update_promptcmd=1
 	fi
 fi
+
+test x"$HOSTNAME" = x"" && HOSTNAME=`hostname`
+test x"$NODENAME" = x"" && NODENAME=`echo $HOSTNAME|cut -f1 -d.`
