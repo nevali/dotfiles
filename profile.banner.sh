@@ -7,7 +7,7 @@ if [ $is_interactive -eq 1 ] && [ $is_login -eq 1 ] ; then
 	printf "${ansi_reset}${col}"
 	printf -- "-%.0s" {1..78}
 	printf "${ansi_reset}\n"
-	printf "${col}%s@%s - %s (%s)${ansi_reset}\n" "`whoami`" ""`hostname`"" "`uname -sr`" "`uname -m`"
+	printf "${col}%s@%s - %s (%s)${ansi_reset}\n" "$LOGNAME" ""$NODENAME"" "`uname -sr`" "`uname -m`"
 	uptime=$(echo `uptime`)
 	printf "${ansi_reset} %s\n" "$uptime"
 	date=`date +"%A %e %B %Y %H:%M:%S %z (%Z)"`
