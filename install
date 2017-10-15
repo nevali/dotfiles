@@ -1,8 +1,11 @@
 #! /bin/sh
 
 FILES='emacs muttrc bashrc git-ignores indent.pro screenrc plan project
-pgpkey profile.common profile bashrc nanorc zshenv tmux.conf
-iterm2_shell_integration.bash'
+pgpkey profile bashrc nanorc zshenv tmux.conf
+iterm2_shell_integration.bash
+profile.common
+profile.init.sh profile.colours.sh profile.dircolors.sh profile.prompt.sh
+profile.macosx.sh profile.banner.sh profile.paths.sh profile.fini.sh'
 
 here=`dirname $0`
 here=`cd $here && pwd`
@@ -10,7 +13,7 @@ for f in $FILES ; do
 	if test -h $HOME/.$f ; then
 	    echo "- Removing existing symbolic link at $HOME/.$f" >&2
 	    rm $HOME/.$f
-	elif test -a $HOME/.$f ; then
+	elif test -e $HOME/.$f ; then
 	    echo "- Moving existing $HOME/$f out of the way" >&2
 	    mv $HOME/.$f $HOME/.$f.dotfiles-backup-`date +%Y%m%d%H%M%S`
         fi

@@ -1,6 +1,7 @@
 .LS*
 .DS_Store
 ._*
+.*.swp
 .svn
 CVS
 *~
