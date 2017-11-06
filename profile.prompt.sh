@@ -84,7 +84,6 @@ profile_title()
 	local suf
 	
 	if test x"$TERM" = x"xterm" || test x"$TERM" = x"xterm-color" || test x"$TERM" = x"xterm-256color" ; then
-		test x"$NODENAME" = x"" && NODENAME=`echo $HOSTNAME|cut -f1 -d.`
 		suf='$'
 		test x"$UID" = x"0" && suf='#'
 		if test x"$TERM_PROGRAM" = x"Apple_Terminal" ; then
