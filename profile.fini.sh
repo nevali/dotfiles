@@ -10,8 +10,10 @@ fi
 
 if test x"$shell_name" = x"bash" ; then
 	. "$HOME/.iterm2_shell_integration.bash"
-	ITERM_PREEXEC_INTERACTIVE_MODE="yes"
-	iterm2_preexec_invoke_cmd
+	if type -t iterm2_preexec_invoke_cmd 2>/dev/null >&2 ; then
+		ITERM_PREEXEC_INTERACTIVE_MODE="yes"
+		iterm2_preexec_invoke_cmd
+	fi
 fi
 
 if test $update_promptcmd -eq 1 ; then
