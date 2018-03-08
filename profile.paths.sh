@@ -29,6 +29,10 @@ profile_addpath /opt/txsuite/bin
 profile_addpath /opt/csw/bin
 profile_addpath /usr/gnu/bin
 profile_addpath /opt/ports/bin
+profile_addpath /opt/djgpp/bin
+profile_addpath /opt/mingw32/bin
+profile_addpath /opt/google-cloud-sdk/bin
+profile_addpath /opt/brew/bin
 profile_addpath /Local/Library/PostgreSQL/Current/bin
 profile_addpath /Library/PostgreSQL/Current/bin
 
