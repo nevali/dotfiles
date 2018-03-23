@@ -1,0 +1,17 @@
+PROFILEDIR=${PROFILEDIR:-"$HOME/.dotfiles/sh/common"}
+
+if test -r /etc/zshenv ; then
+	. /etc/zshenv
+fi
+
+if test -r "$HOME/.profile.local" ; then
+	. "$HOME/.profile.local"
+fi
+
+. "${PROFILEDIR}/setup"
+
+if test -r "$HOME/.zshenv.local" ; then
+	. "$HOME/.zshenv.local"
+fi
+
+. "${PROFILEDIR}/finalise"

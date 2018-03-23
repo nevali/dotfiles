@@ -11,17 +11,23 @@ here=`dirname $0`
 here=`cd $here && pwd`
 for f in $FILES ; do
 	if test -h $HOME/.$f ; then
-	    echo "- Removing existing symbolic link at $HOME/.$f" >&2
-	    rm $HOME/.$f
+		echo "- Removing existing symbolic link at $HOME/.$f" >&2
+		rm $HOME/.$f
 	elif test -e $HOME/.$f ; then
-	    echo "- Moving existing $HOME/$f out of the way" >&2
-	    mv $HOME/.$f $HOME/.$f.dotfiles-backup-`date +%Y%m%d%H%M%S`
-        fi
-    ln -s $here/$f $HOME/.$f
+		echo "- Moving existing $HOME/$f out of the way" >&2
+		mv $HOME/.$f $HOME/.$f.dotfiles-backup-`date +%Y%m%d%H%M%S`
+	fi
 done
 
-rm -f $HOME/.CFUserTextEncoding
-cp CFUserTextEncoding $HOME/.CFUserTextEncoding
+## Install shell initialisation scripts
+
+ln -sf "$here/sh/profile" "$HOME/.profile"
+ln -sf "$here/sh/bash/bashrc" "$HOME/.bashrc"
+ln -sf "$here/sh/zsh/zshenv" "$HOME/.zshenv"
+
+## Install application configuration
+
+# Emacs
 
 if test -d $HOME/.emacs.d ; then
     true
@@ -33,7 +39,24 @@ if test -h $HOME/.emacs.d/common ; then
 elif test -d $HOME/.emacs.d/common ; then
     mv $HOME/.emacs.d/common $HOME/.emacs.d/common.dotfiles-backup-`date +%Y%m%d%H%M%S`
 fi
-ln -s $here/emacs.d $HOME/.emacs.d/common
+ln -s $here/emacs/emacs.d $HOME/.emacs.d/common
+
+# Git
+
+# Indent
+
+# Mutt
+
+# Nano
+
+# Screen
+
+# tmux
+
+## Install macOS-specific files
+
+rm -f $HOME/.CFUserTextEncoding
+cp macOS/CFUserTextEncoding $HOME/.CFUserTextEncoding
 
 if test -d $HOME/Library ; then
 	echo "Installing files to $HOME/Library" >&2

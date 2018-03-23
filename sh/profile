@@ -1,0 +1,8 @@
+PROFILEDIR=${PROFILEDIR:-"$HOME/.dotfiles/sh/common"}
+
+if test -r "$HOME/.profile.local" ; then
+	. "$HOME/.profile.local"
+fi
+
+. "${PROFILEDIR}/setup"
+. "${PROFILEDIR}/finalise"

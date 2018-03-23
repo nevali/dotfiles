@@ -1,0 +1,83 @@
+test x"$PROFILE_TRACE" = x"yes" && echo ">> .profile.paths.sh" >&2
+
+profile_PATH="$default_PATH"
+
+pathspec()
+{
+	if test -d "$1" ; then
+		case "$profile_PATH" in
+		"*:$1:*|*:$1|$1:*")
+			return
+			;;
+		"")
+			profile_PATH="$1"
+			;;
+		*)
+			profile_PATH="$profile_PATH:$1"
+			;;
+		esac
+	fi
+}
+
+pathspec_default()
+{
+	profile_PATH="$default_PATH"
+}
+
+pathspec_reset()
+{
+	profile_path=""
+}
+
+init_paths()
+{
+	case "$1" in
+		no|off|false|0)
+			return 0
+			;;
+		default)
+			PATH="$default_PATH"
+			;;
+		yes|on|true|1)
+			PATH="$profile_PATH"
+			;;
+		auto|"")
+			if [ $is_login -eq 1 ] ; then
+				PATH="$profile_PATH"
+			fi
+			;;
+		*)
+			echo "Usage: path_mode=[ auto | on | off | default ]" >&2
+			
+	esac
+	export PATH
+}
+
+## Add default pathspecs which can be overidden in .profile.rc
+## Note that these are only added to PATH if they exist
+
+pathspec "$HOME/Tools"
+pathspec "$HOME/bin"
+pathspec /Volumes/iDisk/Tools
+pathspec /Network/Tools
+
+pathspec /usr/local/bin
+
+pathspec /opt/local/bin
+pathspec /opt/xapian/bin
+pathspec /opt/txsuite/bin
+pathspec /opt/csw/bin
+pathspec /usr/gnu/bin
+pathspec /opt/ports/bin
+pathspec /opt/djgpp/bin
+pathspec /opt/mingw32/bin
+pathspec /opt/google-cloud-sdk/bin
+pathspec /opt/brew/bin
+
+pathspec /usr/local/git/bin
+pathspec /usr/local/mysql/bin
+pathspec /Network/Library/PostgreSQL/Current/bin
+pathspec /Library/PostgreSQL/Current/bin
+pathspec /Library/Frameworks/Python.framework/Versions/3.6/bin
+pathspec /Library/Frameworks/Python.framework/Versions/2.7/bin
+pathspec /Library/Frameworks/Mono.framework/Versions/Current/Commands

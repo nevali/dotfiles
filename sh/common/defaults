@@ -1,0 +1,35 @@
+## Default options which can be overidden by ~/profile.rc
+
+## Whether to display a banner at login
+# One of 'auto' (interactive login shells only), 'off', 'interactive'
+banner_mode=${banner_mode:-auto}
+
+## Whether to reset PATH
+# One of 'auto' (login shells only), 'on' (all shells), 'off' (don't touch the PATH), 'default' (reset to default PATH)
+path_mode=${path_mode:-auto}
+
+## Whether to reset $PS1, $PS2, etc.
+# One of 'auto' (interactive login shells only), 'off', 'interactive'
+prompt_mode=${prompt_mode:-auto}
+
+## Editor preference for all shells
+editor_list='emacs nano pico jed'
+
+## Editor preference for local shells
+editor_list_local="mate ${editor_list}"
+
+## Pager preference
+pager_list='less more'
+
+#### Other defaults, not to be overidden by users
+default_PATH="`getconf PATH 2>/dev/null`"
+default_PATH=${default_PATH:-"/bin:/usr/bin"}
+is_login=0
+is_interactive=0
+is_local=0
+shell_name="sh"
+shell_location="unknown"
+has_ansi=0
+has_colour=0
+has_256colour=0
+has_xterm=0

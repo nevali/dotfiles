@@ -1,0 +1,14 @@
+. "$PROFILEDIR/defaults"
+. "$PROFILEDIR/paths"
+
+if test -r "$HOME/.profile.rc" ; then
+	. "$HOME/.profile.rc"
+fi
+
+. "${PROFILEDIR}/globals"
+. "${PROFILEDIR}/terminal"
+. "${PROFILEDIR}/sysbanner"
+. "${PROFILEDIR}/prompt"
+. "${PROFILEDIR}/dircolors"
+. "${PROFILEDIR}/statusbar"
+. "${PROFILEDIR}/interactive"
