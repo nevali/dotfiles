@@ -80,7 +80,11 @@ profile_cwd()
 	if test x"$here" = x"$HOME" ; then
 		_profile_curdir='~'
 	else
-		_profile_curdir=`basename "$here"`
+		if test $shell_name = zsh ; then
+			_profile_curdir=`basename "$here" | sed 's@%@%%@g'`
+		else
+			_profile_curdir=`basename "$here"`
+		fi
 	fi
 }
 
