@@ -51,7 +51,7 @@ init_terminal() {
 	fi
 }
 
-function colourcode()
+colourcode()
 {
 	case "$1" in
 		black) echo 0 ;;
@@ -65,7 +65,7 @@ function colourcode()
 	esac
 }
 
-function cprintf()
+cprintf()
 {
 	if [ $_term_dirty -eq 1 ] ; then
 		_term_dirty=0
@@ -73,7 +73,7 @@ function cprintf()
 	printf $*
 }
 
-function textcolor()
+textcolor()
 {
 	local col
 	
@@ -82,47 +82,47 @@ function textcolor()
 	printf "${csib}%d${csie}" $(( 30 + $col))
 }
 
-function reset()
+reset()
 {
 	tput reset
 }
 
-function clear()
+clear()
 {
 	tput clear
 }
 
-function scrollarea()
+scrollarea()
 {
 	printf "${csib}%d;%dr" "$1" "$2"
 }
 
-function scrollreset()
+scrollreset()
 {
 	printf "${csib}r"
 }
 
-function delline()
+delline()
 {
 	printf "${csib}%d;1H${csib}3K" "$1"
 }
 
-function gotoxy()
+gotoxy()
 {
 	printf "${csib}%d;%dH" "$2" "$1"
 }
 
-function savecp()
+savecp()
 {
 	printf "\0337"
 }
 
-function restorecp()
+restorecp()
 {
 	printf "\0338"
 }
 
-function ansicolors() {
+ansicolors() {
 	for back in 0 40 41 42 43 44 45 46 47 100 101 102 103 104 105 106 107 ; do
 		printf "\033[0m%-3d: " $back
 		for front in 0 1 2 3 4 5 6 7 ; do

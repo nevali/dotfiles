@@ -1,4 +1,4 @@
-function sysbanner()
+sysbanner()
 {
 	local col bcol uptime 
 	case "$1" in

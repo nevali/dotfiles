@@ -3,54 +3,75 @@
 _profile_curdir=''
 _profile_branch=''
 _profile_ts=''
+profile_ps1='$ '
+test $is_root -eq 1 && profile_ps1='# '
+profile_ps2='> '
 
 init_prompt()
 {
 	local nps npe prompt_user prompt_host prompt_path prompt_ind prompt_ps2
-	local pbit_preamble pbit_postamble pbit_user pbit_vcs pbit_path
+	local pbit_preamble pbit_postamble pbit_user pbit_vcs pbit_path prompt_subst
 	
+	prompt_subst=0
+	prompt_colour=0
 	prompt_tty="$TTYNAME"
+	prompt_user="$LOGNAME"
+	prompt_host="$NODENAME"
+	# Inherit the defaults above
+	prompt_ind="${profile_ps1}"
+	prompt_ps2="${profile_ps2}"
 
 	if test $shell_name = zsh ; then
 		setopt promptsubst
+		prompt_subst=1
+		prompt_colour=1
 		nps='%{'
 		npe='%}'
 		prompt_user='%n'
 		prompt_host='%m'
 		prompt_path=' ${_profile_curdir}'
-		prompt_ind='%#'
+		prompt_ind='%# '
 		prompt_ps2='%_>'
 	elif test $shell_name = bash ; then
+		prompt_subst=1
+		prompt_colour=1
 		nps='\['
 		npe='\]'
 		prompt_user='\u'
 		prompt_host='\h'
 		prompt_path=' \W'
-		prompt_ind='\$'
-		prompt_ps2='>'
-	else
-		nps=`printf "\001"`
-		npe=`printf "\002"`
-		prompt_user="$LOGNAME"
-		prompt_host="$NODENAME"
-		prompt_path=''
-		prompt_ind='$'
-		prompt_ps2='>'
+		prompt_ind='\$ '
 	fi
 	
-	pbit_preamble="${nps}${ansi_reset}${ansi_bnormal}${npe}[${nps}${ansi_normal}${npe}\${_profile_ts} "
-	pbit_postamble="${nps}${ansi_bnormal}${npe}]${nps}${ansi_bred}${npe}${prompt_ind} ${nps}${ansi_reset}${npe}"
+	pbit_preamble='['
+	pbit_postamble="]${prompt_ind}"
+	pbit_path="${prompt_path}"
 	if test $is_local -eq 1 ; then
-		pbit_user="${nps}${ansi_bgreen}${npe}${prompt_user}:${prompt_tty}"
+		pbit_user="${prompt_user}:${prompt_tty}"
 	else
-		pbit_user="${nps}${ansi_bcyan}${npe}${prompt_user}${nps}${ansi_green}${npe}@${nps}${ansi_bcyan}${npe}${prompt_host}:${prompt_tty}"
+		pbit_user="${prompt_user}@${prompt_host}:${prompt_tty}"
 	fi
-
-	pbit_vcs="${nps}${ansi_bcyan}${npe}\${_profile_branch}"
-	pbit_path="${nps}${ansi_reset}${ansi_bmagenta}${npe}${prompt_path}"
-
-	PS1="${pbit_preamble}${pbit_user}${pbit_path}${pbit_vcs}${pbit_postamble}"
-	PS2="${nps}${ansi_reset}${ansi_bred}${npe}${prompt_ps2}${nps}${ansi_reset}${npe} "
+	if test $prompt_subst -eq 1 ; then
+		pbit_preamble="${pbit_preamble}\${_profile_ts} "
+		pbit_vcs="\${_profile_branch}"
+	fi
+	profile_ps2="${prompt_ps2}"
+	
+	if test $prompt_colour -eq 1 ; then
+		pbit_preamble="${nps}${ansi_reset}${ansi_bnormal}${npe}[${nps}${ansi_normal}${npe}"
+		pbit_postamble="${nps}${ansi_bnormal}${npe}]${nps}${ansi_bred}${npe}${prompt_ind} ${nps}${ansi_reset}${npe}"
+		pbit_path="${nps}${ansi_reset}${ansi_bmagenta}${npe}${prompt_path}"
+		if test $is_local -eq 1 ; then
+			pbit_user="${nps}${ansi_bgreen}${npe}${prompt_user}:${prompt_tty}"
+		else
+			pbit_user="${nps}${ansi_bcyan}${npe}${prompt_user}${nps}${ansi_green}${npe}@${nps}${ansi_bcyan}${npe}${prompt_host}:${prompt_tty}"
+		fi
+		if test $prompt_subst -eq 1 ; then
+			pbit_vcs="${nps}${ansi_bcyan}${npe}\${_profile_branch}"
+		fi
+		profile_ps2="${nps}${ansi_reset}${ansi_bred}${npe}${prompt_ps2}${nps}${ansi_reset}${npe} "
+	fi
+	profile_ps1="${pbit_preamble}${pbit_user}${pbit_path}${pbit_vcs}${pbit_postamble}"
 	def_prompt_command="profile_precmd"
 }
 
@@ -101,7 +122,7 @@ profile_title()
 	
 	if test x"$TERM" = x"xterm" || test x"$TERM" = x"xterm-color" || test x"$TERM" = x"xterm-256color" ; then
 		suf='$'
-		test x"$UID" = x"0" && suf='#'
+		test $is_root -eq 1 && suf='#'
 		if test x"$TERM_PROGRAM" = x"Apple_Terminal" ; then
 			printf "\033]2;[%s@%s%s]%s\007" "$LOGNAME" "$NODENAME" "$_profile_branch" "$suf"
 		else

@@ -5,18 +5,26 @@ test x"$ZSH_NAME" = x"" || shell_name="zsh"
 
 ## Determine shell execution environment type
 is_interactive=0
-[[ $- == *i* ]] && is_interactive=1
 is_login=0
 case "$shell_name" in
 	bash)
 		shopt -q login_shell && is_login=1
 		set -o posix
+		[[ $- == *i* ]] && is_interactive=1
 		;;
 	zsh)
+		[[ $- == *i* ]] && is_interactive=1
 		[[ -o interactive ]] && is_interactive=1
 		[[ -o login ]] && is_login=1
 		;;
+	*)
+		[ -t 0 ] && is_interactive=1
+		;;
 esac
+
+if test "$(id -u 2>/dev/null)" = "0" ; then
+	is_root=1
+fi
 
 ## Determine whether this is a remote or a local session
 if test x"$shell_location" = x"remote" ; then
@@ -31,12 +39,6 @@ else
 	shell_location="remote"
 fi
 export shell_location
-
-## Detect Mac OS X
-is_macosx=0
-[ x"$Apple_Ubiquity_Message" = x"" ] || is_macosx=1
-[ x"$TERM_PROGRAM" = x"Apple_Terminal" ] && is_macosx=1
-[ x"$TERM_PROGRAM" = x"iTerm.app" ] && is_macosx=1
 
 ## On interactive shells, determine whether we should set the
 ## prompt or not based upon whether the contents of PS1/PS2/PROMPT_COMMAND
@@ -69,7 +71,19 @@ if [ $is_interactive -eq 1 ] ; then
 	fi
 fi
 
-test x"$HOSTNAME" = x"" && HOSTNAME=`hostname`
-test x"$NODENAME" = x"" && NODENAME=`echo $HOSTNAME|cut -f1 -d.`
-test x"$TTYNAME" = x"" && TTYNAME=$(tty | sed 's!^/dev/!!')
+test x"$HOSTNAME" = x"" && HOSTNAME=$(hostname)
+test x"$NODENAME" = x"" && NODENAME=$(echo ${HOSTNAME} |cut -f1 -d.)
+test x"$TTYNAME" = x"" && TTYNAME=$(tty | sed 's@^/dev/@@')
+test x"$LOGNAME" = x"" && LOGNAME=$(whoami)
+test x"$SYSTYPE" = x"" && SYSTYPE=$(uname -s)
+
+## Detect Mac OS X
+is_macosx=0
+[ x"$Apple_Ubiquity_Message" = x"" ] || is_macosx=1
+[ x"$TERM_PROGRAM" = x"Apple_Terminal" ] && is_macosx=1
+[ x"$TERM_PROGRAM" = x"iTerm.app" ] && is_macosx=1
+
+if test x"$SYSTYPE" = x"Darwin" && test -r /System/Library/CoreServices/SystemVersion.plist 2>/dev/null ; then
+	is_macosx=1
+fi
 
