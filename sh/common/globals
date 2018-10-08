@@ -56,10 +56,10 @@ if [ $is_interactive -eq 1 ] ; then
 		test x"$PS1" = x'\u@\h:\w\$ ' || \
 		test x"$PS1" = x'\h:\W \u\$ ' || \
 		test x"$PS1" = x'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ ' || \
-		test x"$PS1" = x"%m%#" ; then
+		test x"$PS1" = x'%m%# ' ; then
 		update_ps1=1
 	fi
-	if test x"$PS2" = x'> ' || test x"$PS2" = x"%_>" ; then
+	if test x"$PS2" = x'> ' || test x"$PS2" = x'%_> ' ; then
 		update_ps2=1
 	fi
 	if test x"$PROMPT_COMMAND" = x"" || \

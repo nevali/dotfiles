@@ -30,7 +30,7 @@ init_prompt()
 		prompt_user='%n'
 		prompt_host='%m'
 		prompt_path=' ${_profile_curdir}'
-		prompt_ind='%# '
+		prompt_ind='%#'
 		prompt_ps2='%_>'
 	elif test $shell_name = bash ; then
 		prompt_subst=1
@@ -40,7 +40,7 @@ init_prompt()
 		prompt_user='\u'
 		prompt_host='\h'
 		prompt_path=' \W'
-		prompt_ind='\$ '
+		prompt_ind='\$'
 	fi
 	
 	pbit_preamble='['
