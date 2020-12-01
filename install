@@ -58,7 +58,7 @@ ln -s $here/emacs/emacs.d $HOME/.emacs.d/common
 rm -f $HOME/.CFUserTextEncoding
 cp macOS/CFUserTextEncoding $HOME/.CFUserTextEncoding
 
-if test -d $HOME/Library ; then
+if test -d Library && test -d $HOME/Library ; then
 	echo "Installing files to $HOME/Library" >&2
 	find Library -type d -print -exec mkdir -p $HOME/\{\} \;
 	find Library -type f -exec rm -f $HOME/\{\} \;
