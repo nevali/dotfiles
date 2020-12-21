@@ -1,0 +1,9 @@
+# ~/.zprofile is processed after /etc/zprofile for all login shells
+
+is_login=1
+
+if test -r "$HOME/.profile.local" ; then
+	. "$HOME/.profile.local"
+fi
+
+. "${PROFILEDIR}/finalise"

@@ -21,8 +21,11 @@ editor_list_local="mate ${editor_list}"
 ## Pager preference
 pager_list='less more'
 
+## Whether to show debug information or not
+profile_debug=0
+
 #### Other defaults, not to be overidden by users
-default_PATH="`getconf PATH 2>/dev/null`"
+default_PATH=$(getconf PATH 2>/dev/null)
 default_PATH=${default_PATH:-"/bin:/usr/bin"}
 is_login=0
 is_interactive=0
@@ -34,3 +37,6 @@ has_ansi=0
 has_colour=0
 has_256colour=0
 has_xterm=0
+has_utf8=0
+ITERM2_SHOULD_DECORATE_PROMPT=0
+

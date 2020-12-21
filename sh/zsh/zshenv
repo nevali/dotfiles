@@ -1,17 +1,21 @@
-PROFILEDIR=${PROFILEDIR:-"$HOME/.dotfiles/sh/common"}
+# ~/.zshenv is processed for every shell, immediately after /etc/zshenv
 
-if test -r /etc/zshenv ; then
-	. /etc/zshenv
-fi
+# /etc/zshenv
+# ~/.zshenv
+# /etc/zprofile (login only)
+# ~/.zprofile   (login only)
+# /etc/zshrc    (interactive only)
+# ~/.zshrc      (interactive only)
+# /etc/zlogin   (login only)
+# ~/.zlogin     (login only)
 
-if test -r "$HOME/.profile.local" ; then
-	. "$HOME/.profile.local"
-fi
-
-. "${PROFILEDIR}/setup"
+profile_link=$(readlink "$HOME/.profile")
+profile_dir=$(dirname ${profile_link})
+DOTFILES=$(cd ${profile_dir}/.. && pwd)
+PROFILEDIR=${PROFILEDIR:-"$DOTFILES/sh/common"}
 
 if test -r "$HOME/.zshenv.local" ; then
 	. "$HOME/.zshenv.local"
 fi
 
-. "${PROFILEDIR}/finalise"
+. "${PROFILEDIR}/setup"

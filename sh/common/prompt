@@ -72,6 +72,17 @@ init_prompt()
 		profile_ps2="${nps}${ansi_reset}${ansi_bred}${npe}${prompt_ps2}${nps}${ansi_reset}${npe} "
 	fi
 	profile_ps1="${pbit_preamble}${pbit_user}${pbit_path}${pbit_vcs}${pbit_postamble}"
+	
+	# If we can detect iTerm2 and we're using UTF-8, use a different prompt
+	if [ "$TERM_PROGRAM" = "iTerm.app" ] && [ $has_utf8 -eq 1 ] ; then
+		prompt_ind='❖ '
+		[ $is_root -eq 1 ] && prompt_ind='◈ '
+		if [ $is_local -eq 1 ] ; then
+			profile_ps1="${nps}${ansi_reset}${ansi_bgreen}${npe}${prompt_ind}${nps}${ansi_normal}${npe}"
+		else
+			profile_ps1="${nps}${ansi_reset}${ansi_bcyan}${npe}${prompt_ind}${nps}${ansi_normal}${npe}"
+		fi
+	fi
 	def_prompt_command="profile_precmd"
 }
 
@@ -79,6 +90,14 @@ init_prompt()
 ## window title and, on Mac OS X, current working directory)
 profile_precmd()
 {
+	if test $update_ps1 -eq 1 ; then
+		PS1="$profile_ps1"
+	fi
+	
+	if test $update_ps2 -eq 1 ; then
+		PS2="$profile_ps2"
+	fi
+	
 	profile_vcbranch
 	profile_timestamp
 	profile_cwd

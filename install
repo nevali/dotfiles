@@ -1,14 +1,17 @@
 #! /bin/sh
 
+set -e
+
 FILES='emacs muttrc bashrc git-ignores indent.pro screenrc plan project
-pgpkey profile bashrc nanorc zshenv tmux.conf
-iterm2_shell_integration.bash
+pgpkey profile bashrc nanorc zshenv zshrc zshprofile zshlogin zshlogout
+tmux.conf iterm2_shell_integration.bash
 profile.common
 profile.init.sh profile.colours.sh profile.dircolors.sh profile.prompt.sh
 profile.macosx.sh profile.banner.sh profile.paths.sh profile.fini.sh'
 
-here=`dirname $0`
-here=`cd $here && pwd`
+here=$(dirname "$0")
+here=$(cd "$here" && pwd)
+
 for f in $FILES ; do
 	if test -h $HOME/.$f ; then
 		echo "- Removing existing symbolic link at $HOME/.$f" >&2
@@ -24,6 +27,10 @@ done
 ln -sf "$here/sh/profile" "$HOME/.profile"
 ln -sf "$here/sh/bash/bashrc" "$HOME/.bashrc"
 ln -sf "$here/sh/zsh/zshenv" "$HOME/.zshenv"
+ln -sf "$here/sh/zsh/zprofile" "$HOME/.zprofile"
+ln -sf "$here/sh/zsh/zshrc" "$HOME/.zshrc"
+ln -sf "$here/sh/zsh/zlogin" "$HOME/.zlogin"
+ln -sf "$here/sh/zsh/zlogout" "$HOME/.zlogout"
 
 ## Install application configuration
 
@@ -39,7 +46,7 @@ if test -h $HOME/.emacs.d/common ; then
 elif test -d $HOME/.emacs.d/common ; then
     mv $HOME/.emacs.d/common $HOME/.emacs.d/common.dotfiles-backup-`date +%Y%m%d%H%M%S`
 fi
-ln -s $here/emacs/emacs.d $HOME/.emacs.d/common
+ln -s "$here/emacs/emacs.d" $HOME/.emacs.d/common
 
 # Git
 
@@ -55,12 +62,15 @@ ln -s $here/emacs/emacs.d $HOME/.emacs.d/common
 
 ## Install macOS-specific files
 
-rm -f $HOME/.CFUserTextEncoding
-cp macOS/CFUserTextEncoding $HOME/.CFUserTextEncoding
+rm -f "$HOME/.CFUserTextEncoding"
+cp "$here/macOS/CFUserTextEncoding" "$HOME/.CFUserTextEncoding"
 
+cd "$here/macOS"
 if test -d $HOME/Library ; then
 	echo "Installing files to $HOME/Library" >&2
 	find Library -type d -print -exec mkdir -p $HOME/\{\} \;
 	find Library -type f -exec rm -f $HOME/\{\} \;
-	find Library -type f -print -exec cp $here/\{\} $HOME/\{\} \;
+	find Library -type f -print -exec cp "$here/macOS/{}" $HOME/\{\} \;
 fi
+cd ..
+

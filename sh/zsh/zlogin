@@ -1,0 +1,6 @@
+# ~/.zlogin is processed after /etc/zlogin for login shells, which may not
+# be interactive
+
+is_login=1
+
+

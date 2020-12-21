@@ -1,42 +1,4 @@
-sysbanner()
-{
-	local col bcol uptime 
-	case "$1" in
-		"")
-			;;
-		yes|true|on|auto|login)
-			[ $is_interactive -eq 1 ] || return 0
-			[ $is_login -eq 1 ] || return 0
-			;;
-		interactive)
-			[ $is_interactive -eq 1 ] || return 0
-			;;
-		no|off|false)
-			return 0
-			;;
-		*)
-			echo "Usage: banner_mode=[ login | interactive | auto ]" >&2
-			return 1
-			;;
-	esac
-	if [ $is_local -eq 1 ] ; then
-		# Local terminal shave a different colour scheme to remote to make
-		# it easier to distinguish at a glance
-		col="${ansi_bgreen}"
-		bcol="${ansi_bmagenta}"
-	else
-		col="${ansi_bwhite}"
-		bcol="${ansi_byellow}"
-	fi
-	printf "${ansi_reset}${bcol}"
-	printf -- "-%.0s" {1..80}
-	printf "${ansi_reset}\n"
-	printf "${col}  %s@%s:%s${ansi_reset} - ${ansi_bblue}%s${ansi_reset} (%s)${ansi_reset}\n" "$LOGNAME" "$NODENAME" "$TTYNAME" "`uname -sr`" "`uname -m`"
-	printf "${ansi_reset}${ansi_bold}   %s${ansi_reset}\n" "$(date '+%A %e %B %Y %H:%M:%S %z (%Z)')"
-	uptime=$(echo `uptime`)
-	printf "${ansi_reset}   %s\n" "$uptime"
-	printf "${ansi_reset}${bcol}"
-	printf -- "-%.0s" {1..80}
-	printf "${ansi_reset}\n"
-}
+# XXX remove
 
+sysbanner() {
+}

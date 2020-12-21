@@ -1,0 +1,4 @@
+# ~/.zshrc is processed after /etc/zshrc for interactive shells
+
+is_interactive=1
+

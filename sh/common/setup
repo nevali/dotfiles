@@ -1,14 +1,31 @@
-. "$PROFILEDIR/defaults"
-. "$PROFILEDIR/paths"
 
-if test -r "$HOME/.profile.rc" ; then
-	. "$HOME/.profile.rc"
+. "${PROFILEDIR}/defaults"
+. "${PROFILEDIR}/utilities"
+. "${PROFILEDIR}/paths"
+
+if test -r "${HOME}/.profile.rc" ; then
+	. "${HOME}/.profile.rc"
 fi
 
 . "${PROFILEDIR}/globals"
-. "${PROFILEDIR}/terminal"
-. "${PROFILEDIR}/sysbanner"
 . "${PROFILEDIR}/prompt"
-. "${PROFILEDIR}/dircolors"
-. "${PROFILEDIR}/statusbar"
 . "${PROFILEDIR}/interactive"
+
+setlang
+_profile_modules=""
+_profile_modfini="true"
+
+if [ -d "${PROFILEDIR}/../modules" ] ; then
+	for module in "${PROFILEDIR}/../modules/"*.sh ; do
+		if [ -r "$module" ] ; then
+			modname=$(basename "$module"  | tr A-Z a-z | sed -e 's!^[0-9]*-!!g' -e 's!\.sh$!!g' -e 's![^a-z0-9]!_!g' -e 's!__!_!g' )
+			debug 'module' "loading '%s' from '%s'" "${modname}" "${module}"
+			eval "_${modname}_init() { true ; }"
+			eval "_${modname}_fini() { true ; }"
+			. "$module"
+			_profile_modules="${_profile_modules} ${modname}"
+			debug 'module' 'initialising module %s' "${modname}"
+			eval "_${modname}_init"
+		fi
+	done
+fi

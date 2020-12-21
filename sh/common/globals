@@ -49,13 +49,15 @@ update_ps2=0
 update_promptcmd=0
 
 if [ $is_interactive -eq 1 ] ; then
-	if test x"$PS1" = x'# ' || \
+	if [ $is_login -eq 1 ] || 
+		test x"$PS1" = x'# ' || \
 		test x"$PS1" = x'$ ' || \
 		test x"$PS1" = x'\$ ' || \
 		test x"$PS1" = x'\s-\v\$ ' || \
 		test x"$PS1" = x'\u@\h:\w\$ ' || \
 		test x"$PS1" = x'\h:\W \u\$ ' || \
 		test x"$PS1" = x'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ ' || \
+		test x"$PS1" = x'%n@%m %1~ %# ' || \
 		test x"$PS1" = x'%m%# ' ; then
 		update_ps1=1
 	fi

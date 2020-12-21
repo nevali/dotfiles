@@ -32,21 +32,6 @@ init_interactive()
 #		export VISUAL
 #	fi
 
-	if test x"$shell_name" = x"bash" ; then
-		. "${PROFILEDIR}/../bash/iterm2_shell_integration.bash"
-		if type -t iterm2_preexec_invoke_cmd 2>/dev/null >&2 ; then
-			ITERM_PREEXEC_INTERACTIVE_MODE="yes"
-			iterm2_preexec_invoke_cmd
-		fi
-	fi
-	if test x"$shell_name" = x"zsh" ; then
-		. "${PROFILEDIR}/../zsh/iterm2_shell_integration.zsh"
-		if whence -v iterm2_preexec_invoke_cmd 2>/dev/null >&2 ; then
-			ITERM_PREEXEC_INTERACTIVE_MODE="yes"
-			iterm2_preexec_invoke_cmd
-		fi
-	fi
-	
 	if test $update_ps1 -eq 1 ; then
 		PS1="$profile_ps1"
 	fi
@@ -54,19 +39,14 @@ init_interactive()
 	if test $update_ps2 -eq 1 ; then
 		PS2="$profile_ps2"
 	fi
-	
+		
+	# Ensure profile_precmd() and the iTerm2 pre-exec command get invoked
+	# prior to the prompt being displayed
 	if test $update_promptcmd -eq 1 ; then
 		PROMPT_COMMAND="profile_precmd"
 
 		precmd() {
 			profile_precmd
 		}
-
-		if test x"$shell_name" = x"bash" ; then
-			if type -t iterm2_preexec_invoke_cmd 2>/dev/null >&2 ; then
-				PROMPT_COMMAND="profile_precmd ; iterm2_preexec_invoke_cmd"
-			fi
-		fi
 	fi
-
 }

@@ -1,5 +1,3 @@
-test x"$PROFILE_TRACE" = x"yes" && echo ">> .profile.paths.sh" >&2
-
 profile_PATH="$default_PATH"
 
 pathspec()
@@ -10,10 +8,31 @@ pathspec()
 			return
 			;;
 		"")
+			debug "paths" "Creating empty \${PATH} with '%s'" "$1"
 			profile_PATH="$1"
 			;;
 		*)
+			debug "paths" "Appending '%s' to \${PATH}" "$1"
 			profile_PATH="$profile_PATH:$1"
+			;;
+		esac
+	fi
+}
+
+pathspec_prepend()
+{
+	if test -d "$1" ; then
+		case "$profile_PATH" in
+		"*:$1:*|*:$1|$1:*")
+			return
+			;;
+		"")
+			debug "paths" "Creating empty \${PATH} with '%s'" "$1"
+			profile_PATH="$1"
+			;;
+		*)
+			debug "paths" "Prepending '%s' to \${PATH}" "$1"
+			profile_PATH="$1:$profile_PATH"
 			;;
 		esac
 	fi
@@ -56,31 +75,33 @@ init_paths()
 ## Add default pathspecs which can be overidden in .profile.rc
 ## Note that these are only added to PATH if they exist
 
+pathspec "$HOME/Tools/${NODENAME}"
+pathspec "$HOME/Tools/${SYSTYPE}"
 pathspec "$HOME/Tools"
 pathspec "$HOME/bin"
+pathspec /Library/OpenSC/bin
+pathspec /Applications/Utilities/Keybase.app/Contents/SharedSupport/bin
 pathspec /Volumes/iDisk/Tools
 pathspec /Network/Tools
-
 pathspec /sbin
 pathspec /usr/sbin
-
 pathspec /usr/local/bin
 
-pathspec /opt/local/bin
-pathspec /opt/xapian/bin
-pathspec /opt/txsuite/bin
-pathspec /opt/csw/bin
-pathspec /usr/gnu/bin
-pathspec /opt/ports/bin
-pathspec /opt/djgpp/bin
-pathspec /opt/mingw32/bin
-pathspec /opt/google-cloud-sdk/bin
-pathspec /opt/brew/bin
+if test -d /opt ; then
+	for i in /opt/* ; do
+		pathspec "$i/bin"
+	done
+fi
 
+pathspec /usr/gnu/bin
 pathspec /usr/local/git/bin
 pathspec /usr/local/mysql/bin
 pathspec /Network/Library/PostgreSQL/Current/bin
 pathspec /Library/PostgreSQL/Current/bin
+pathspec /Applications/Utilities/Docker.app/Contents/Resources/bin
+pathspec /Applications/Utilities/CMake.app/Contents/bin
 pathspec /Library/Frameworks/Python.framework/Versions/3.6/bin
 pathspec /Library/Frameworks/Python.framework/Versions/2.7/bin
 pathspec /Library/Frameworks/Mono.framework/Versions/Current/Commands
+pathspec /Applications/MacDown.app/Contents/SharedSupport/bin
+

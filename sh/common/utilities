@@ -1,0 +1,81 @@
+if [ -r "${HOME}/.profile.debug" ] ; then
+	profile_debug=1
+fi
+
+# debug MODULE FORMAT ...
+debug() {
+	local mod
+	[ $is_interactive -ne 1 ] || return
+	[ $profile_debug -ge 1 ] || return
+	mod="$1"
+	shift
+	( printf "[debug] %s: " "$mod" ; printf "$@" ; printf "\n" ) >&2
+}
+
+# info MODULE FORMAT ...
+info() {
+	local mod
+	[ $is_interactive -ne 1 ] || return
+	mod="$1"
+	shift
+	( printf "[info] %s: " "$mod" ; printf "$@" ; printf "\n" ) >&2
+}
+
+# notice MODULE FORMAT ...
+notice() {
+	local mod
+	[ $is_interactive -ne 1 ] || return
+	mod="$1"
+	shift
+	( printf "[notice] %s: " "$mod" ; printf "$@" ; printf "\n"  ) >&2
+}
+
+
+# warn MODULE FORMAT ...
+warn() {
+	local mod
+	[ $is_interactive -ne 1 ] || return
+	mod="$1"
+	shift
+	( printf "[warning] %s: " "$mod" ; printf "$@" ; printf "\n"  ) >&2
+}
+
+# err MODULE FORMAT ...
+err() {
+	local mod
+	[ $is_interactive -ne 1 ] || return
+	mod="$1"
+	shift
+	( printf "[error] %s: " "$mod" ; printf "$@" ; printf "\n"  ) >&2
+}
+
+# fatal MODULE FORMAT ...
+fatal() {
+	local mod
+	mod="$1"
+	shift
+	( printf "[fatal error] %s: " "$mod" ; printf "$@" ; printf "\n"  ) >&2
+	exit 10
+}
+
+# setlang LANG
+setlang() {
+	if ! [ x"$1" = x"" ] ; then
+		LANG="$1"
+		export LANG
+	fi
+	has_utf8=0
+	if [ x"$(echo $LC_CTYPE | tr A-Z a-z)" = x"utf-8" ] ; then
+		has_utf8=1
+	fi
+	case "$LC_ALL" in
+		*.UTF-8|*.utf-8)
+			has_utf8=1
+			;;
+	esac
+	case "$LANG" in
+		*.UTF-8|*.utf-8)
+			has_utf8=1
+			;;
+	esac
+}

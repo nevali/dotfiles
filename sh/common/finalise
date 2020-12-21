@@ -1,6 +1,11 @@
-init_terminal
 init_paths "$paths_mode"
-init_dircolors
 init_prompt
-sysbanner "$banner_mode"
 init_interactive
+
+if ! [ -z "${_profile_modules}" ] ; then
+	for module in $(echo ${_profile_modules}) ; do
+		debug 'module' 'finalising module %s' "${module}"
+		eval "_${module}_fini"
+	done
+fi
+
