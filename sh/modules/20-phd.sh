@@ -8,6 +8,8 @@
 unset PHD
 
 _phd_init() {
+	# if ~/.profile.portable doesn't exist, bail out
+	[ -r "$HOME/.profile.portable" ] || phd_enabled=no
 }
 
 _phd_fini() {
