@@ -1,42 +1,52 @@
-## Default options which can be overidden by ~/profile.rc
+#### Default options which can be overidden by a user's ~/profile.rc
+#
+# Note that this file is parsed AFTER ~/.profile.rc
 
-## Whether to display a banner at login
-# One of 'auto' (interactive login shells only), 'off', 'interactive'
-banner_mode=${banner_mode:-auto}
+#### Global customisation
 
 ## Whether to reset PATH
-# One of 'auto' (login shells only), 'on' (all shells), 'off' (don't touch the PATH), 'default' (reset to default PATH)
+# One of 'auto' (login shells only), 'on' (all shells), 'off' (don't touch the PATH), 'default' (force-reset to default PATH when a new shell is started)
 path_mode=${path_mode:-auto}
 
 ## Whether to reset $PS1, $PS2, etc.
-# One of 'auto' (interactive login shells only), 'off', 'interactive'
+# One of 'auto' (interactive login shells only), 'off', 'interactive' (any interactive shell)
 prompt_mode=${prompt_mode:-auto}
 
 ## Editor preference for all shells
-editor_list='emacs nano pico jed'
+editor_list=${editor_list:-'emacs nano pico jed'}
 
 ## Editor preference for local shells
-editor_list_local="mate ${editor_list}"
+editor_list_local=${editor_list_local:-"mate ${editor_list}"}
 
-## Pager preference
-pager_list='less more'
+## Pager preference for all shells
+pager_list=${pager_list:-'less more'}
 
-## Whether to show debug information or not
-profile_debug=0
+## Whether to show debug messages or not
+profile_debug=${profile_debug:-0}
+
 
 #### Other defaults, not to be overidden by users
-default_PATH=$(getconf PATH 2>/dev/null)
-default_PATH=${default_PATH:-"/bin:/usr/bin"}
-is_login=0
-is_interactive=0
+
+[ -r "${HOME}/.profile.debug" ] && profile_debug=1
+profile_debug=${profile_debug:-0}
+
+is_macosx=0
+is_login=${is_login:-0}
+is_interactive=${is_interactive:-0}
 is_local=0
 is_root=0
-shell_name="sh"
+shell_name=${shell_name:-sh}
 shell_location="unknown"
+
+default_PATH=$(getconf PATH 2>/dev/null)
+default_PATH=${default_PATH:-"/bin:/usr/bin"}
+profile_PATH=${default_PATH}
+
+COMMAND_MODE=${COMMAND_MODE:-unix2003}
+export COMMAND_MODE
+
 has_ansi=0
 has_colour=0
 has_256colour=0
 has_xterm=0
 has_utf8=0
-ITERM2_SHOULD_DECORATE_PROMPT=0
-

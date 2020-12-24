@@ -1,9 +1,24 @@
 # ~/.zprofile is processed after /etc/zprofile for all login shells
 
+# /etc/zshenv
+# ~/.zshenv
+# /etc/zprofile (login only)
+# ~/.zprofile   (login only)
+# /etc/zshrc    (interactive only)
+# ~/.zshrc      (interactive only)
+# /etc/zlogin   (login only)
+# ~/.zlogin     (login only)
+
 is_login=1
 
-if test -r "$HOME/.profile.local" ; then
-	. "$HOME/.profile.local"
-fi
+# If this is an interactive shell, delay finalisation until after zshrc has
+# been sourced
 
-. "${PROFILEDIR}/finalise"
+[[ $- == *i* ]] && is_interactive=1
+[[ -o interactive ]] && is_interactive=1
+
+if [ x"$is_interactive" = x"1" ] ; then
+	true
+else
+	profile_finalise
+fi

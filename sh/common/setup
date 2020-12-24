@@ -1,31 +1,135 @@
+# setup: load all of the things
 
-. "${PROFILEDIR}/defaults"
-. "${PROFILEDIR}/utilities"
-. "${PROFILEDIR}/paths"
+# The core deals with the following things:-
+#
+# - utilities for logging messages (fatal, error, warn, notice, info, debug)
+# - utilities for managing paths (pathspec et al)
+# - utilities for specifying language preferences (setlang)
+# - detecting what type of a session this is (interactive or not, login or not)
+# - module loading and initialisation
+#
+# everything else should be handled by modules, which can be selectively
+# enabled or disabled via MODNAME_enable=yes|no in ~/.profile.rc
+#
+# with all modules disabled, the effect should be restricted to setting
+# some variables, defining some functions, installing hooks, and updating
+# $PATH according to the value of $path_mode (set in ~/.profile.rc)
+#
+# this file may be safely sourced more than once
 
-if test -r "${HOME}/.profile.rc" ; then
-	. "${HOME}/.profile.rc"
-fi
+if [ -z "$_profile_loaded" ] ; then
+	
+	_profile_loaded=1
+	_profile_finalised=0
+	
+	. "${PROFILEDIR}/utilities"
 
-. "${PROFILEDIR}/globals"
-. "${PROFILEDIR}/prompt"
-. "${PROFILEDIR}/interactive"
+	# ~/.profile.local contains any local configuration
 
-setlang
-_profile_modules=""
-_profile_modfini="true"
+	if test -r "${HOME}/.profile.rc" ; then
+		. "${HOME}/.profile.rc"
+	fi
 
-if [ -d "${PROFILEDIR}/../modules" ] ; then
-	for module in "${PROFILEDIR}/../modules/"*.sh ; do
-		if [ -r "$module" ] ; then
-			modname=$(basename "$module"  | tr A-Z a-z | sed -e 's!^[0-9]*-!!g' -e 's!\.sh$!!g' -e 's![^a-z0-9]!_!g' -e 's!__!_!g' )
-			debug 'module' "loading '%s' from '%s'" "${modname}" "${module}"
-			eval "_${modname}_init() { true ; }"
-			eval "_${modname}_fini() { true ; }"
-			. "$module"
-			_profile_modules="${_profile_modules} ${modname}"
-			debug 'module' 'initialising module %s' "${modname}"
-			eval "_${modname}_init"
+	. "${PROFILEDIR}/defaults"
+	. "${PROFILEDIR}/detect"
+
+	setlang
+	debug profile "core initialisation complete"
+
+	# Load any available modules
+	
+	_profile_modules=""
+	_profile_modfini="true"
+
+	if [ -d "${PROFILEDIR}/../modules" ] ; then
+		for module in "${PROFILEDIR}/../modules/"*.sh ; do
+			if [ -r "$module" ] ; then
+				modname=$(basename "$module"  | tr A-Z a-z | sed -e 's!^[0-9]*-!!g' -e 's!\.sh$!!g' -e 's![^a-z0-9]!_!g' -e 's!__!_!g' )
+				eval "${modname}_enabled=\${${modname}_enabled:-yes}"
+				eval "_${modname}_init() { true ; }"
+				eval "_${modname}_fini() { true ; }"
+				eval "_enabled=\${${modname}_enabled}"
+				if [ $_enabled = yes ] ; then
+					debug 'module' "loading '%s' from '%s'" "${modname}" "${module}"
+					. "$module"
+					debug 'module' 'initialising module %s' "${modname}"
+					eval "_${modname}_init"
+					eval "_enabled=\${${modname}_enabled}"
+					if [ $_enabled = yes ] ; then
+						_profile_modules="${_profile_modules} ${modname}"
+					else
+						debug 'module' 'module %s disabled itself during initialisation' "${modname}"
+					fi
+				else
+					debug 'module' 'skipping (disabled) module %s' "${modname}"
+				fi
+			fi
+		done
+	fi
+	
+	# Install any hooks
+	
+	if [ $shell_name = zsh ] ; then
+		autoload -Uz add-zsh-hook
+		add-zsh-hook precmd _profile_precmd_hook
+	elif [ $shell_name = bash ] ; then
+		if [ -z "$PROMPT_COMMAND" ] ; then
+			PROMPT_COMMAND="_profile_precmd_hook"
+		else
+			PROMPT_COMMAND="${PROMPT_COMMAND} ; _profile_precmd_hook"
 		fi
-	done
+	fi
+
+	# profile_finalise() is called by bashrc (bash) and zprofile (zsh)
+	profile_finalise()
+	{
+		if [ $_profile_finalised -ge 1 ] ; then
+			return
+		fi
+		_profile_finalised=1
+		
+		debug "profile" "finalising"
+		
+		case "${path_mode}" in
+			no|off|false|0|never)
+				# Do nothing
+				;;
+			default)
+				# Force $PATH to be set to the default
+				PATH="$default_PATH"
+				;;
+			yes|on|true|1|force|always)
+				# Force $PATH to be set to our derived path
+				PATH="$profile_PATH"
+				;;
+			auto|"")
+				# Automatic: set $PATH if this is a login shell, and do not
+				# touch it otherwise
+				if [ $is_login -eq 1 ] ; then
+					PATH="$profile_PATH"
+				fi
+				;;
+			*)
+				warning paths "Usage: path_mode=[ auto | on/1/true/force/yes | off/0/false/no | default ]" >&2
+				;;
+		esac
+		debug "profile" "PATH is now %s" "${PATH}"
+		export PATH
+
+		# ~/.profile.local contains any local overrides
+
+		if test -r "${HOME}/.profile.local" ; then
+			. "${HOME}/.profile.local"
+		fi
+				
+		# Finalise any loaded modules
+
+		if ! [ -z "${_profile_modules}" ] ; then
+			for module in $(echo ${_profile_modules}) ; do
+				debug 'module' 'finalising module %s' "${module}"
+				eval "_${module}_fini"
+			done
+		fi
+	}
+
 fi

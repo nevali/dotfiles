@@ -1,4 +1,14 @@
 # ~/.zshrc is processed after /etc/zshrc for interactive shells
 
+# /etc/zshenv
+# ~/.zshenv
+# /etc/zprofile (login only)
+# ~/.zprofile   (login only)
+# /etc/zshrc    (interactive only)
+# ~/.zshrc      (interactive only)
+# /etc/zlogin   (login only)
+# ~/.zlogin     (login only)
+
 is_interactive=1
 
+profile_finalise

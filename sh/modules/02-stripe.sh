@@ -3,10 +3,7 @@ stripe() {
 	local lines=${LINES:-24}
 	local cols=${COLUMNS:-80}
 	local s=$(expr $cols / 2 - 2)
-	
-	[ $is_interactive -eq 1 ] || return 0
-	[ $is_login -eq 1 ] || return 0
-	[ $has_ansi -eq 1 ] || return 0
+
 	reset
 	clear
 	gotoxy 1 1
@@ -16,6 +13,14 @@ stripe() {
 	printf "%s" "${ansi_reset}"
 	gotoxy 1 2
 	
+}
+
+_stripe_init() {
+	[ $is_interactive -eq 1 ] || stripe_enabled=no
+	[ $is_login -eq 1 ] || stripe_enabled=no
+	[ $has_ansi -eq 1 ] || stripe_enabled=no
+	show_stripe=${show_stripe:-no}
+	[ $show_stripe = "yes" ] || stripe_enabled=no
 }
 
 _stripe_fini() {

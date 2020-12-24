@@ -1,6 +1,15 @@
 # ~/.zlogin is processed after /etc/zlogin for login shells, which may not
 # be interactive
 
+# /etc/zshenv
+# ~/.zshenv
+# /etc/zprofile (login only)
+# ~/.zprofile   (login only)
+# /etc/zshrc    (interactive only)
+# ~/.zshrc      (interactive only)
+# /etc/zlogin   (login only)
+# ~/.zlogin     (login only)
+
 is_login=1
 
 

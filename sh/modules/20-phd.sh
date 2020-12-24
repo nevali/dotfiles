@@ -7,6 +7,9 @@
 
 unset PHD
 
+_phd_init() {
+}
+
 _phd_fini() {
 	if [ x"$KBFSROOT" = x"" ] ; then
 		debug "phd" "No portable home available"

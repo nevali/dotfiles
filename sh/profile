@@ -3,9 +3,7 @@ profile_dir=$(dirname "${profile_link}")
 DOTFILES=$(cd "${profile_dir}/.." && pwd)
 PROFILEDIR=${PROFILEDIR:-"$DOTFILES/sh/common"}
 
-if test -r "$HOME/.profile.local" ; then
-	. "$HOME/.profile.local"
-fi
-
 . "${PROFILEDIR}/setup"
-. "${PROFILEDIR}/finalise"
+
+profile_finalise
+

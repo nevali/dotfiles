@@ -1,3 +1,6 @@
+# If you take a copy of this file and customise it, be sure to set $DOTFILES
+# (and $PROFILEDIR), source $PROFILEDIR/setup, and call profile_finalise
+
 profile_link=$(readlink "$HOME/.profile")
 profile_dir=$(dirname "${profile_link}")
 DOTFILES=$(cd "${profile_dir}/.." && pwd)
@@ -7,14 +10,11 @@ if test -r /etc/bashrc ; then
 	. /etc/bashrc
 fi
 
-if test -r "$HOME/.profile.local" ; then
-	. "$HOME/.profile.local"
-fi
-
 . "${PROFILEDIR}/setup"
 
 if test -r "$HOME/.bashrc.local" ; then
 	. "$HOME/.bashrc.local"
 fi
 
-. "${PROFILEDIR}/finalise"
+profile_finalise
+

@@ -3,9 +3,12 @@
 unset KBFSUSER
 unset KBFSROOT
 
-_keybase_fini() {
+_keybase_init() {
 	pathspec /Applications/Utilities/Keybase.app/Contents/SharedSupport/bin
 	pathspec /Applications/Keybase.app/Contents/SharedSupport/bin
+}
+
+_keybase_fini() {
 
 	KBFSUSER=$(keybase whoami 2>/dev/null)
 

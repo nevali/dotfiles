@@ -1,0 +1,82 @@
+#### Detect various characteristics of this session
+
+[ x"$HOSTNAME" = x"" ] && HOSTNAME=$(hostname)
+[ x"$NODENAME" = x"" ] && NODENAME=$(echo ${HOSTNAME} |cut -f1 -d.)
+[ x"$TTYNAME" = x"" ] && TTYNAME=$(tty | sed 's@^/dev/@@')
+[ x"$LOGNAME" = x"" ] && LOGNAME=$(whoami)
+[ x"$SYSTYPE" = x"" ] && SYSTYPE=$(uname -s)
+
+## Are we running in a root shell?
+detect_root() {
+	if [ $(id -u 2>/dev/null) -eq 0 ] ; then
+		is_root=1
+	fi
+	debug detect_root "is_root=%d" $is_root
+	
+}
+
+## Determine the name (type) of the shell
+detect_shell() {
+	test x"$BASH_VERSION" = x"" || shell_name="bash"
+	test x"$ZSH_NAME" = x"" || shell_name="zsh"
+	debug detect_shell "shell_name=%s" "${shell_name}"
+}
+
+## Determine shell execution environment type
+detect_session() {
+	case "$shell_name" in
+		bash)
+			shopt -q login_shell && is_login=1
+			set -o posix
+			[[ $- == *i* ]] && is_interactive=1
+			;;
+		zsh)
+			[[ $- == *i* ]] && is_interactive=1
+			[[ -o interactive ]] && is_interactive=1
+			[[ -o login ]] && is_login=1
+			;;
+		*)
+			[ -t 0 ] && is_interactive=1
+			;;
+	esac
+	debug detect_session "is_login=%d, is_interactive=%d" $is_login $is_interactive
+}
+
+## Determine whether this is a remote or a local session
+detect_locality() {
+	if test x"$shell_location" = x"remote" ; then
+		is_local=0
+	elif test x"$shell_location" = x"local" ; then
+		is_local=1
+	elif test -z "$SSH_CLIENT" && test -z"$SSH_CONNECTION" ; then
+		is_local=1
+		shell_location="local"
+	else
+		is_local=0
+		shell_location="remote"
+	fi
+	export shell_location
+	debug detect_locality "shell_location=%s" $shell_location
+}
+
+## Detect macOS
+detect_macosx() {
+	[ $is_macosx -ge 1 ] && return
+	[ x"$Apple_Ubiquity_Message" = x"" ] || is_macosx=1
+	[ x"$TERM_PROGRAM" = x"Apple_Terminal" ] && is_macosx=1
+	[ x"$TERM_PROGRAM" = x"iTerm.app" ] && is_macosx=1
+
+	if test x"$SYSTYPE" = x"Darwin" && test -r /System/Library/CoreServices/SystemVersion.plist 2>/dev/null ; then
+		is_macosx=1
+	fi
+	debug detect_macosx "is_macosx=%d" $is_macosx
+}
+
+detect_shell
+detect_session
+detect_root
+detect_locality
+detect_macosx
+
+debug "detect" "HOSTNAME=%s, NODENAME=%s, TTYNAME=%s, LOGNAME=%s, SYSTYPE=%s" \
+	"$HOSTNAME" "$NODENAME" "$TTYNAME" "$LOGNAME" "$SYSTYPE"

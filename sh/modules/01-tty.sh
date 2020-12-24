@@ -5,8 +5,10 @@
 csib=""
 csie=""
 
-_tty_early() {
-	[ $is_interactive -eq 1 ] || return 0
+_tty_init() {
+	[ $is_interactive -eq 1 ] || tty_enabled=no
+	[ $tty_enabled = yes ] || return
+
 	esc=`printf "\033"`
 	test "$shell_name" = "bash" && esc='\e'
 
@@ -32,7 +34,6 @@ _tty_early() {
 			has_ansi=1
 			;;
 	esac
-
 	if [ $has_ansi -eq 1 ] ; then
 		csib="${esc}["
 		csie="m"
@@ -47,10 +48,61 @@ _tty_early() {
 		eval ansi_bg$col="$(tput setab $(colourcode $col) 2>/dev/null)"
 		eval ansi_bgb$col="$(tput setab $(($(colourcode $col) + 8)) 2>/dev/null)"
 	done
+		
+	if [ $has_ansi -ge 1 ] && [ $has_colour -ge 1 ] ; then
+		# debug MODULE FORMAT ...
+		debug() {
+			local mod
+			[ $profile_debug -ge 1 ] || return
+			mod="$1"
+			shift
+			( printf "%s[Debug] " "${ansi_bblack}" ; _tty_prefix $mod bblack bblack ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
+		}
+
+		# info MODULE FORMAT ...
+		info() {
+			local mod
+			mod="$1"
+			shift
+			( _tty_prefix "" bblack ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
+		}
+
+		# notice MODULE FORMAT ...
+		notice() {
+			local mod
+			mod="$1"
+			shift
+			( _tty_prefix "" bblack bwhite ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
+		}
+
+		# warn MODULE FORMAT ...
+		warn() {
+			local mod
+			mod="$1"
+			shift
+			( _tty_prefix "Warning" byellow ; _tty_prefix ${mod} bblack bnormal ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
+		}
 	
-	if [ $has_256colour -eq 1 ] ; then
-		true
+		# err MODULE FORMAT ...
+		err() {
+			local mod
+			mod="$1"
+			shift
+			( _tty_prefix "Error" bred ; _tty_prefix ${mod} bblack bnormal ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
+		}
+
+		# fatal MODULE FORMAT ...
+		fatal() {
+			local mod
+			mod="$1"
+			shift
+			( _tty_prefix "Critical error" bred ; _tty_prefix ${mod} bblack bnormal ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
+			exit 10
+		}
 	fi
+	
+	debug tty "TERM=%s, has_ansi=%d, has_colour=%d, has_256colour=%d, has_xterm=%d" "$TERM" $has_ansi $has_colour $has_256colour $has_xterm
+	
 }
 
 colourcode()
@@ -158,58 +210,3 @@ _tty_prefix() {
 	printf "%s%s%s%s: %s" "${ansi_reset}" "$c" "$1" "${ansi_normal}" "$s"
 }
 
-_tty_early
-
-if [ $has_ansi -ge 1 ] && [ $has_colour -ge 1 ] ; then
-	
-	# debug MODULE FORMAT ...
-	debug() {
-		local mod
-		[ $profile_debug -ge 1 ] || return
-		mod="$1"
-		shift
-		( printf "%s[Debug] " "${ansi_bblack}" ; _tty_prefix $mod bblack bblack ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
-	}
-
-	# info MODULE FORMAT ...
-	info() {
-		local mod
-		mod="$1"
-		shift
-		( _tty_prefix "" bblack ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
-	}
-
-	# notice MODULE FORMAT ...
-	notice() {
-		local mod
-		mod="$1"
-		shift
-		( _tty_prefix "" bblack bwhite ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
-	}
-
-	# warn MODULE FORMAT ...
-	warn() {
-		local mod
-		mod="$1"
-		shift
-		( _tty_prefix "Warning" byellow ; _tty_prefix ${mod} bblack bnormal ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
-	}
-	
-	# err MODULE FORMAT ...
-	err() {
-		local mod
-		mod="$1"
-		shift
-		( _tty_prefix "Error" bred ; _tty_prefix ${mod} bblack bnormal ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
-	}
-
-	# fatal MODULE FORMAT ...
-	fatal() {
-		local mod
-		mod="$1"
-		shift
-		( _tty_prefix "Critical error" bred ; _tty_prefix ${mod} bblack bnormal ; printf "$@" ; printf "%s\n" "${ansi_normal}" ) >&2
-		exit 10
-	}
-	debug "tty" "Terminal type is %s, dimensions are %sx%s" "$TERM" "$COLUMNS" "$LINES"
-fi

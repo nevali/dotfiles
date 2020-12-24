@@ -1,30 +1,28 @@
-if [ -r "${HOME}/.profile.debug" ] ; then
-	profile_debug=1
-fi
+#### Common utilities which are always available
 
-# debug MODULE FORMAT ...
+## debug MODULE FORMAT ...
 debug() {
 	local mod
-	[ $is_interactive -ne 1 ] || return
+	[ $is_interactive -eq 1 ] || return
 	[ $profile_debug -ge 1 ] || return
 	mod="$1"
 	shift
 	( printf "[debug] %s: " "$mod" ; printf "$@" ; printf "\n" ) >&2
 }
 
-# info MODULE FORMAT ...
+## info MODULE FORMAT ...
 info() {
 	local mod
-	[ $is_interactive -ne 1 ] || return
+	[ $is_interactive -eq 1 ] || return
 	mod="$1"
 	shift
 	( printf "[info] %s: " "$mod" ; printf "$@" ; printf "\n" ) >&2
 }
 
-# notice MODULE FORMAT ...
+## notice MODULE FORMAT ...
 notice() {
 	local mod
-	[ $is_interactive -ne 1 ] || return
+	[ $is_interactive -eq 1 ] || return
 	mod="$1"
 	shift
 	( printf "[notice] %s: " "$mod" ; printf "$@" ; printf "\n"  ) >&2
@@ -34,22 +32,21 @@ notice() {
 # warn MODULE FORMAT ...
 warn() {
 	local mod
-	[ $is_interactive -ne 1 ] || return
+	[ $is_interactive -eq 1 ] || return
 	mod="$1"
 	shift
 	( printf "[warning] %s: " "$mod" ; printf "$@" ; printf "\n"  ) >&2
 }
 
-# err MODULE FORMAT ...
+## err MODULE FORMAT ...
 err() {
 	local mod
-	[ $is_interactive -ne 1 ] || return
 	mod="$1"
 	shift
 	( printf "[error] %s: " "$mod" ; printf "$@" ; printf "\n"  ) >&2
 }
 
-# fatal MODULE FORMAT ...
+## fatal MODULE FORMAT ...
 fatal() {
 	local mod
 	mod="$1"
@@ -58,7 +55,7 @@ fatal() {
 	exit 10
 }
 
-# setlang LANG
+## setlang [LANG]
 setlang() {
 	if ! [ x"$1" = x"" ] ; then
 		LANG="$1"
@@ -77,5 +74,89 @@ setlang() {
 		*.UTF-8|*.utf-8)
 			has_utf8=1
 			;;
+	esac
+}
+
+## pathspec DIR
+# Append a directory to PATH if it exists and is not already present in the list
+pathspec()
+{
+	if test -d "$1" ; then
+		case "$profile_PATH" in
+		"*:$1:*|*:$1|$1:*")
+			return
+			;;
+		"")
+			debug "pathspec" "Creating empty pathspec with '%s'" "$1"
+			profile_PATH="$1"
+			;;
+		*)
+			debug "pathspec" "Appending '%s' to pathspec" "$1"
+			profile_PATH="$profile_PATH:$1"
+			;;
+		esac
+	fi
+}
+
+## pathspec_prepend DIR
+# Prepend a directory to PATH if it exists and is not already present in the
+# list
+pathspec_prepend()
+{
+	if test -d "$1" ; then
+		case "$profile_PATH" in
+		"*:$1:*|*:$1|$1:*")
+			return
+			;;
+		"")
+			debug "pathspec" "Creating empty pathspec with '%s'" "$1"
+			profile_PATH="$1"
+			;;
+		*)
+			debug "pathspec" "Prepending '%s' to pathspec" "$1"
+			profile_PATH="$1:$profile_PATH"
+			;;
+		esac
+	fi
+}
+
+## pathspec_default
+# Reset our PATH-to-be to the default path
+pathspec_default()
+{
+	profile_PATH="$default_PATH"
+	debug "pathspec" "Resetting pathspec to %s" "${default_PATH}"
+}
+
+## pathspec_reset
+# Reset our PATH-to-be to empty
+pathspec_reset()
+{
+	profile_path=""
+	debug "pathspec" "Resetting pathspec to empty"
+}
+
+_profile_precmd_hooks="true"
+_profile_precmd_late_hooks="true"
+
+# Internal pre-command hook
+_profile_precmd_hook() {
+	# If we haven't finalised yet and are about to display a prompt, now is
+	# the time
+	profile_finalise
+	eval $_profile_precmd_hooks
+	eval $_profile_precmd_late_hooks
+}
+
+profile_hook() {
+	case $1 in
+	precmd)
+		_profile_precmd_hooks="${_profile_precmd_hooks} ; $2"
+		;;
+	precmd-late)
+		_profile_precmd_late_hooks="${_profile_precmd_late_hooks} ; $2"
+		;;
+	*)
+		err hooks "unknown hook '%s'" "$1"
 	esac
 }

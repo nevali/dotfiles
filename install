@@ -2,6 +2,8 @@
 
 set -e
 
+### TIDY THIS UP
+
 FILES='emacs muttrc bashrc git-ignores indent.pro screenrc plan project
 pgpkey profile bashrc nanorc zshenv zshrc zshprofile zshlogin zshlogout
 tmux.conf iterm2_shell_integration.bash
@@ -31,46 +33,3 @@ ln -sf "$here/sh/zsh/zprofile" "$HOME/.zprofile"
 ln -sf "$here/sh/zsh/zshrc" "$HOME/.zshrc"
 ln -sf "$here/sh/zsh/zlogin" "$HOME/.zlogin"
 ln -sf "$here/sh/zsh/zlogout" "$HOME/.zlogout"
-
-## Install application configuration
-
-# Emacs
-
-if test -d $HOME/.emacs.d ; then
-    true
-else
-    mkdir $HOME/.emacs.d || exit $?
-fi
-if test -h $HOME/.emacs.d/common ; then
-    rm $HOME/.emacs.d/common
-elif test -d $HOME/.emacs.d/common ; then
-    mv $HOME/.emacs.d/common $HOME/.emacs.d/common.dotfiles-backup-`date +%Y%m%d%H%M%S`
-fi
-ln -s "$here/emacs/emacs.d" $HOME/.emacs.d/common
-
-# Git
-
-# Indent
-
-# Mutt
-
-# Nano
-
-# Screen
-
-# tmux
-
-## Install macOS-specific files
-
-rm -f "$HOME/.CFUserTextEncoding"
-cp "$here/macOS/CFUserTextEncoding" "$HOME/.CFUserTextEncoding"
-
-cd "$here/macOS"
-if test -d $HOME/Library ; then
-	echo "Installing files to $HOME/Library" >&2
-	find Library -type d -print -exec mkdir -p $HOME/\{\} \;
-	find Library -type f -exec rm -f $HOME/\{\} \;
-	find Library -type f -print -exec cp "$here/macOS/{}" $HOME/\{\} \;
-fi
-cd ..
-
