@@ -2,7 +2,7 @@
 
 set -e
 
-FILES='profile bashrc zshenv zprofile zshrc zlogin zlogout'
+FILES='profile bashrc zshenv zprofile zshrc zlogin zlogout kshrc'
 
 here=$(dirname "$0")
 here=$(cd "$here" && pwd)
@@ -26,3 +26,4 @@ ln -sf "$here/sh/zsh/zprofile" "$HOME/.zprofile"
 ln -sf "$here/sh/zsh/zshrc" "$HOME/.zshrc"
 ln -sf "$here/sh/zsh/zlogin" "$HOME/.zlogin"
 ln -sf "$here/sh/zsh/zlogout" "$HOME/.zlogout"
+ln -sf "$here/sh/ksh/kshrc" "$HOME/.kshrc"

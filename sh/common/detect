@@ -19,6 +19,7 @@ detect_root() {
 detect_shell() {
 	test x"$BASH_VERSION" = x"" || shell_name="bash"
 	test x"$ZSH_NAME" = x"" || shell_name="zsh"
+	test x"$KSH_VERSION" = x"" || shell_name="ksh"
 	debug detect_shell "shell_name=%s" "${shell_name}"
 }
 
@@ -31,6 +32,11 @@ detect_session() {
 			[[ $- == *i* ]] && is_interactive=1
 			;;
 		zsh)
+			[[ $- == *i* ]] && is_interactive=1
+			[[ -o interactive ]] && is_interactive=1
+			[[ -o login ]] && is_login=1
+			;;
+		ksh)
 			[[ $- == *i* ]] && is_interactive=1
 			[[ -o interactive ]] && is_interactive=1
 			[[ -o login ]] && is_login=1

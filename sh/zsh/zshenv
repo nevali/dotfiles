@@ -9,9 +9,9 @@
 # /etc/zlogin   (login only)
 # ~/.zlogin     (login only)
 
-profile_link=$(readlink "$HOME/.profile")
+profile_link=$(readlink "$HOME/.zshenv")
 profile_dir=$(dirname ${profile_link})
-DOTFILES=$(cd ${profile_dir}/.. && pwd)
+DOTFILES=$(cd "${profile_dir}/../.." && pwd)
 PROFILEDIR=${PROFILEDIR:-"$DOTFILES/sh/common"}
 
 if test -r "$HOME/.zshenv.local" ; then

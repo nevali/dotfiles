@@ -1,19 +1,20 @@
 # If you take a copy of this file and customise it, be sure to set $DOTFILES
 # (and $PROFILEDIR), source $PROFILEDIR/setup, and call profile_finalise
 
-profile_link=$(readlink "$HOME/.bashrc")
+shell_name=ksh
+profile_link=$(readlink "$HOME/.kshrc")
 profile_dir=$(dirname "${profile_link}")
 DOTFILES=$(cd "${profile_dir}/../.." && pwd)
 PROFILEDIR=${PROFILEDIR:-"$DOTFILES/sh/common"}
 
-if test -r /etc/bashrc ; then
-	. /etc/bashrc
+if test -r /etc/kshrc ; then
+	. /etc/kshrc
 fi
 
 . "${PROFILEDIR}/setup"
 
-if test -r "$HOME/.bashrc.local" ; then
-	. "$HOME/.bashrc.local"
+if test -r "$HOME/.kshrc.local" ; then
+	. "$HOME/.kshrc.local"
 fi
 
 profile_finalise

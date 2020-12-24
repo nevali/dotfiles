@@ -1,8 +1,9 @@
 
 stripe() {
-	local lines=${LINES:-24}
-	local cols=${COLUMNS:-80}
-	local s=$(expr $cols / 2 - 2)
+	local lines cols s
+	lines=${LINES:-24}
+	cols=${COLUMNS:-80}
+	s=$(expr $cols / 2 - 2)
 
 	reset
 	clear
