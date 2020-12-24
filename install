@@ -2,25 +2,18 @@
 
 set -e
 
-### TIDY THIS UP
-
-FILES='emacs muttrc bashrc git-ignores indent.pro screenrc plan project
-pgpkey profile bashrc nanorc zshenv zshrc zshprofile zshlogin zshlogout
-tmux.conf iterm2_shell_integration.bash
-profile.common
-profile.init.sh profile.colours.sh profile.dircolors.sh profile.prompt.sh
-profile.macosx.sh profile.banner.sh profile.paths.sh profile.fini.sh'
+FILES='profile bashrc zshenv zprofile zshrc zlogin zlogout'
 
 here=$(dirname "$0")
 here=$(cd "$here" && pwd)
 
 for f in $FILES ; do
 	if test -h $HOME/.$f ; then
-		echo "- Removing existing symbolic link at $HOME/.$f" >&2
+		echo "- Replacing symbolic link at $HOME/.$f" >&2
 		rm $HOME/.$f
 	elif test -e $HOME/.$f ; then
 		echo "- Moving existing $HOME/$f out of the way" >&2
-		mv $HOME/.$f $HOME/.$f.dotfiles-backup-`date +%Y%m%d%H%M%S`
+		mv $HOME/.$f $HOME/$f.backup-`date +%Y%m%d%H%M%S`
 	fi
 done
 
