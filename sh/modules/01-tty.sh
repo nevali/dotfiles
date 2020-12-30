@@ -7,7 +7,7 @@ csie=""
 
 _tty_init() {
 	[ $is_interactive -eq 1 ] || tty_enabled=no
-	[ $tty_enabled = yes ] || return
+	[ ${tty_enabled:-yes} = yes ] || return
 
 	esc=`printf "\033"`
 	test "$shell_name" = "bash" && esc='\e'
@@ -25,6 +25,10 @@ _tty_init() {
 			has_xterm=1
 			;;
 		sun-color|linux|vt340)
+			has_ansi=1
+			has_colour=1
+			;;
+		screen|vt*)
 			has_ansi=1
 			has_colour=1
 			;;

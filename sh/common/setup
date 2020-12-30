@@ -45,20 +45,24 @@ if [ -z "$_profile_loaded" ] ; then
 		for module in "${PROFILEDIR}/../modules/"*.sh ; do
 			if [ -r "$module" ] ; then
 				modname=$(basename "$module"  | tr A-Z a-z | sed -e 's!^[0-9]*-!!g' -e 's!\.sh$!!g' -e 's![^a-z0-9]!_!g' -e 's!__!_!g' )
-				eval "${modname}_enabled=\${${modname}_enabled:-yes}"
 				eval "_${modname}_init() { true ; }"
 				eval "_${modname}_fini() { true ; }"
-				eval "_enabled=\${${modname}_enabled}"
+				eval "_enabled=\${${modname}_enabled:-yes}"
 				if [ $_enabled = yes ] ; then
 					debug 'module' "loading '%s' from '%s'" "${modname}" "${module}"
 					. "$module"
-					debug 'module' 'initialising module %s' "${modname}"
-					eval "_${modname}_init"
-					eval "_enabled=\${${modname}_enabled}"
+					eval "_enabled=\${${modname}_enabled:-yes}"
 					if [ $_enabled = yes ] ; then
-						_profile_modules="${_profile_modules} ${modname}"
+						debug 'module' 'initialising module %s' "${modname}"
+						eval "_${modname}_init"
+						eval "_enabled=\${${modname}_enabled:-yes}"
+						if [ $_enabled = yes ] ; then
+							_profile_modules="${_profile_modules} ${modname}"
+						else
+							debug 'module' 'module %s disabled itself during initialisation' "${modname}"
+						fi
 					else
-						debug 'module' 'module %s disabled itself during initialisation' "${modname}"
+						debug 'module' 'module %s must be explicitly enabled with %s_enabled=yes' "${modname}" "${modname}"
 					fi
 				else
 					debug 'module' 'skipping (disabled) module %s' "${modname}"

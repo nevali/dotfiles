@@ -1,8 +1,5 @@
-_lineeditor_init() {
-	true
-}
 
-_lineeditor_fini() {
+_line_editor_fini() {
 	case "$shell_name" in
 		ksh)
 			set -o emacs

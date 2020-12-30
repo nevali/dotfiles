@@ -5,12 +5,9 @@
 #  XDG_DATA_HOME
 #  XDG_CONFIG_HOME
 
-unset PHD
+phd_enabled=${phd_enabled:-no}
 
-_phd_init() {
-	# if ~/.profile.portable doesn't exist, bail out
-	[ -r "$HOME/.profile.portable" ] || phd_enabled=no
-}
+unset PHD
 
 _phd_fini() {
 	if [ x"$KBFSROOT" = x"" ] ; then

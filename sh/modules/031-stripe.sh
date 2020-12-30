@@ -1,3 +1,4 @@
+stripe_enabled=${stripe_enabled:-no}
 
 stripe() {
 	local lines cols s
@@ -20,8 +21,7 @@ _stripe_init() {
 	[ $is_interactive -eq 1 ] || stripe_enabled=no
 	[ $is_login -eq 1 ] || stripe_enabled=no
 	[ $has_ansi -eq 1 ] || stripe_enabled=no
-	show_stripe=${show_stripe:-no}
-	[ $show_stripe = "yes" ] || stripe_enabled=no
+	[ -r ${HOME}/.hushlogin ] && stripe_enabled=no
 }
 
 _stripe_fini() {
