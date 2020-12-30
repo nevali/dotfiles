@@ -18,7 +18,8 @@ _banner_init() {
 }
 
 _banner_repl() {
-	printf -- "$1"'%.s' $(eval "echo {1.."$(($2))"}")
+	printf %$2s |tr " " "$1"
+#	printf -- "$1"'%.s' $(eval "echo {1.."$(($2))"}")
 }
 
 _banner_fini() {

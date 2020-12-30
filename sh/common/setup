@@ -67,19 +67,6 @@ if [ -z "$_profile_loaded" ] ; then
 		done
 	fi
 	
-	# Install any hooks
-	
-	if [ $shell_name = zsh ] ; then
-		autoload -Uz add-zsh-hook
-		add-zsh-hook precmd _profile_precmd_hook
-	elif [ $shell_name = bash ] ; then
-		if [ -z "$PROMPT_COMMAND" ] ; then
-			PROMPT_COMMAND="_profile_precmd_hook"
-		else
-			PROMPT_COMMAND="${PROMPT_COMMAND} ; _profile_precmd_hook"
-		fi
-	fi
-
 	# profile_finalise() is called by bashrc (bash) and zprofile (zsh)
 	profile_finalise()
 	{
