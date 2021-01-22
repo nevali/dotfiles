@@ -8,6 +8,7 @@ _opt_paths_init() {
 	if test -d /opt ; then
 		for i in /opt/* ; do
 			pathspec "$i/bin"
+			pathspec "$i/sbin"
 		done
 	fi
 }
