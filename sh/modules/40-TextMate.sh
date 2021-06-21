@@ -6,8 +6,10 @@ _textmate_init() {
 
 _textmate_fini() {
 	if [ $is_macosx -eq 1 ] ; then
-		true
-		# if `mate` exists, set VISUAL to "/path/to/mate -w"
+		if [ -x /usr/local/bin/mate ] ; then
+			VISUAL="/usr/local/bin/mate -w"
+			export VISUAL
+		fi
 	else
 		# check to see if we should use `rmate`
 		true
